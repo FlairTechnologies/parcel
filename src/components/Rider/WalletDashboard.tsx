@@ -8,43 +8,9 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { getDate } from "@/lib/utils";
 import { Loader } from "../ui/custom/loader";
+import { IOrder, IWallet } from "@/interfaces/interface";
 
 
-interface IOrder {
-  _id: string;
-  orderId: string;
-  receiverPhone: string;
-  receiverName: string;
-  receiversAddress: string;
-  descr: string;
-  sender: IUser;
-  status: string;
-  paymentStatus: string;
-  receiver?: IUser;
-  timeOfArrival?: Date;
-  cost: string;
-  address: string;
-  rider: IUser;
-  gatewayPaymentId?: string;
-  externalReference?: string;
-  authorizationCode?: string;
-  updatedAt: Date;
-  createdAt: Date;
-}
-
-interface IWallet {
-  balance: number;
-  updatedAt: Date;
-  createdAt: Date;
-  rider: any;
-}
-
-interface IWalletAndTransactions {
-  orders: IOrder[];
-  completedOrders: number;
-  notDeliveredOrders: number;
-  wallet: IWallet
-}
 
 
 // Header Component
@@ -163,7 +129,8 @@ const WalletCard = ({ balance, notDeliveredOrders, completedOrders }: { balance:
   );
 };
 
-const ReceiptModal = ({
+// Reciept Modal Component
+export const ReceiptModal = ({
   order,
   isOpen,
   onClose,
@@ -264,7 +231,7 @@ const ReceiptModal = ({
 
 
 // Transaction Item Component
-const TransactionItem = ({ order, onClick }: {
+export const TransactionItem = ({ order, onClick }: {
   order: IOrder,
   onClick: () => void
 }) => {

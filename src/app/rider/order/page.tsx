@@ -1,11 +1,10 @@
 "use client";
-import RiderOrder from "@/components/Rider/RiderOrder";
-import Stepper from "@/components/User/OrderStepper";
+import Orders from "@/components/Rider/RiderOrder";
 import React from "react";
 
 const index = () => {
   return (
-    <RiderOrder />
+    <Orders/>
   );
 };
 
