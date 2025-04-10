@@ -117,14 +117,14 @@ const WalletCard = ({ balance, notDeliveredOrders, completedOrders }: { balance:
           </AlertDialog>
         </div>
       </div>
-      <div className="flex flex-row justify-start gap-4 py-6 px-1">
+      {/* <div className="flex flex-row justify-start gap-4 py-6 px-1">
         <span className="block font-semibold">
           Completed Deliveries: <span className="font-normal">{completedOrders}</span>
         </span>
         <span className="block font-semibold">
           Pending Deliveries: <span className="font-normal">{notDeliveredOrders}</span>
         </span>
-      </div>
+      </div> */}
     </div>
   );
 };

@@ -3,14 +3,15 @@ import { useAuth } from "@/context/AuthContext";
 import { useState, useEffect } from "react";
 import { Bell, Trash2, CheckCircle, ArrowLeft } from "lucide-react";
 import { formatDistanceToNow } from 'date-fns';
-import { useRouter } from "next/navigation";  
+import { useRouter } from "next/navigation";
+import { Loader } from "../ui/custom/loader";
 
 // Type definition for Notification
 type Notification = {
-  _id: string;
-  title: string;
-  isRead: boolean;
-  createdAt: string;
+    _id: string;
+    title: string;
+    isRead: boolean;
+    createdAt: string;
 };
 
 export default function Notifications() {
@@ -28,7 +29,7 @@ export default function Notifications() {
             try {
                 const res = await fetch("/api/notifications", {
                     method: "GET",
-                    headers: { 
+                    headers: {
                         "Authorization": `Bearer ${accessToken}`,
                         "Content-Type": "application/json"
                     },
@@ -58,7 +59,7 @@ export default function Notifications() {
         try {
             const res = await fetch("/api/notifications/read", {
                 method: "PATCH",
-                headers: { 
+                headers: {
                     "Authorization": `Bearer ${accessToken}`,
                     "Content-Type": "application/json"
                 },
@@ -82,7 +83,7 @@ export default function Notifications() {
         try {
             const res = await fetch(`/api/notifications/${id}`, {
                 method: "DELETE",
-                headers: { 
+                headers: {
                     "Authorization": `Bearer ${accessToken}`,
                     "Content-Type": "application/json"
                 },
@@ -111,7 +112,7 @@ export default function Notifications() {
         <div className="max-w-full h-[100vh] mx-auto bg-white shadow-lg rounded-xl p-5 border border-yellow-200">
             <div className="flex items-center mb-4">
                 {/* Back Button */}
-                <button 
+                <button
                     onClick={handleGoBack}
                     className="mr-4 p-2 hover:bg-yellow-50 rounded-full transition-colors"
                     aria-label="Go back"
@@ -143,11 +144,7 @@ export default function Notifications() {
                 </div>
             </div>
 
-            {loading && (
-                <div className="text-center py-4 text-yellow-600">
-                    Loading notifications...
-                </div>
-            )}
+            {loading && <Loader />}
 
             {error && (
                 <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded relative" role="alert">
@@ -165,11 +162,10 @@ export default function Notifications() {
                 {notifications.map((notif) => (
                     <li
                         key={notif._id}
-                        className={`p-4 rounded-lg transition-all duration-300 ease-in-out border ${
-                            notif.isRead 
-                                ? "bg-white border-yellow-100" 
+                        className={`p-4 rounded-lg transition-all duration-300 ease-in-out border ${notif.isRead
+                                ? "bg-white border-yellow-100"
                                 : "bg-yellow-50 border-yellow-200 ring-1 ring-yellow-200"
-                        }`}
+                            }`}
                     >
                         <div className="flex justify-between items-start">
                             <div className="flex-grow pr-3">
