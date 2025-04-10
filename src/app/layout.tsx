@@ -31,9 +31,9 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <AuthProvider>
-          <SocketProvider>
+          {/* <SocketProvider> */}
             {children}
-          </SocketProvider>
+          {/* </SocketProvider> */}
         </AuthProvider>
         <Toaster />
       </body>
