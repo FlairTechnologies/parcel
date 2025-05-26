@@ -73,9 +73,11 @@ const SignInForm = () => {
   return (
     <>
       {loading && <Loader />}
-      <div className="p-6 py-10 md:py-6 bg-white rounded-md w-full md:max-w-md mx-auto md:shadow-md">
-        <h2 className="text-3xl font-bold mb-1">Welcome Back</h2>
-        <p className="mb-6">Login to your account.</p>
+      <div className="p-6 py-10 md:py-6 bg-white rounded-md w-full md:max-w-md mx-auto md:shadow-lg">
+        <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-yellow-600 to-amber-600 bg-clip-text text-transparent mb-2">
+          Welcome Back :)
+        </h2>
+        <p className="text-gray-600 text-lg">Sign in to continue your journey</p>
         <form
           className="flex flex-col gap-5 w-full mt-10 md:mt-7"
           onSubmit={handleSubmit}
@@ -106,17 +108,7 @@ const SignInForm = () => {
 
           <Button label="Proceed" />
         </form>
-        <div className="text-center my-2 text-sm">Or</div>
-        <Button
-          disabled
-          label={
-            <div className="flex items-center justify-center gap-3">
-              <FcGoogle size={20} />
-              <p>Continue With Google</p>
-            </div>
-          }
-          variant="secondary"
-        />
+
         <p className="text-center text-sm mt-4">
           Don’t have an account?{" "}
           <a href="/authentication/signup" className="text-yellow-400">

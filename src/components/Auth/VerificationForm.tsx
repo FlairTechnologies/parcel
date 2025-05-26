@@ -113,7 +113,7 @@ const VerificationForm = () => {
   return (
     <div className="p-6 bg-white rounded-md max-w-md mx-auto shadow-none md:shadow-md">
       {isSubmitting && <Loader />}
-      <h2 className="text-2xl font-bold mb-1 mx-1">Email Verification</h2>
+      <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-yellow-600 to-amber-600 bg-clip-text text-transparent mb-2">Email Verification</h2>
       <p className="mb-9 text-base mx-1 text-gray-500">
         A 6 digit code was sent to the address {email}
       </p>
