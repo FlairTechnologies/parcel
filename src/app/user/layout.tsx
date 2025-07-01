@@ -45,7 +45,7 @@ const navigationItems: NavItem[] = [
             return;
           }
 
-          const redirectURL = `http://localhost:3001?token=${encodeURIComponent(token)}`;
+          const redirectURL = `https://stores.theparcel.com.ng/?token=${encodeURIComponent(token)}`;
           console.log("🔗 Redirecting to:", redirectURL);
           window.location.href = redirectURL;
         } catch (err) {
