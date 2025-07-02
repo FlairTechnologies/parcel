@@ -121,7 +121,7 @@ export default function Layout({ children }: LayoutProps) {
         <div className="flex flex-col flex-grow pt-5 pb-4 overflow-y-auto bg-white shadow-md border-r border-gray-200">
           {/* Logo/Brand */}
           <div className="flex items-center flex-shrink-0 px-4 mb-8">
-            <h1 className="text-xl font-bold" style={{ color: '#F9CA44' }}>Your App</h1>
+            <h1 className="text-xl font-bold" style={{ color: '#F9CA44' }}>Parcel</h1>
           </div>
 
           {/* Navigation */}
