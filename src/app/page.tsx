@@ -1,538 +1,456 @@
-"use client"
+'use client';
 
-import { useState, useEffect, useRef } from "react"
-import { Button } from "@/components/ui/button"
-import {
-  Menu,
-  X,
-  User,
-  Package,
-  MapPin,
-  Bike,
-  ArrowRight,
-  Calendar,
-  Truck,
-  CheckCircle,
-  Clock,
-  Users,
-  Shield,
-  Star,
-  Building2,
-  TrendingUp,
-  MessageCircle,
-  Instagram,
-  Twitter,
-} from "lucide-react"
-import { useRouter } from "next/navigation"
+import { useState, useEffect } from 'react';
+import { Inter } from 'next/font/google';
+import bike from "../../public/illustration/bike-illustration.png"
+import { useRouter } from 'next/navigation';
 
-export default function Home() {
-  // Navigation state
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
+const inter = Inter({ subsets: ['latin'] });
 
-  // Animation states
-  const [isHeroVisible, setIsHeroVisible] = useState(false)
-  const [visibleSteps, setVisibleSteps] = useState<boolean[]>([false, false, false])
-  const [visibleCards, setVisibleCards] = useState<boolean[]>([false, false, false, false])
-  const [visibleTestimonials, setVisibleTestimonials] = useState<boolean[]>([false, false, false])
-  const [isBusinessVisible, setIsBusinessVisible] = useState(false)
-  const router = useRouter()
+// Custom hook for intersection observer
+import type { RefCallback } from 'react';
 
-  // Refs for intersection observer
-  const howItWorksRef = useRef<HTMLElement>(null)
-  const whyChooseUsRef = useRef<HTMLElement>(null)
-  const testimonialsRef = useRef<HTMLElement>(null)
-  const businessRef = useRef<HTMLElement>(null)
+const useIntersectionObserver = (options = {}): [RefCallback<HTMLDivElement>, boolean] => {
+  const [isIntersecting, setIsIntersecting] = useState(false);
+  const [element, setElement] = useState<HTMLDivElement | null>(null);
 
-  // Data
-  const steps = [
-    {
-      icon: Calendar,
-      title: "Schedule a Pickup",
-      description: "Book via our website. Quick and easy scheduling.",
-      step: "01",
-    },
-    {
-      icon: Truck,
-      title: "We Pick It Up Instantly",
-      description: "Our professional riders arrive at your location promptly.",
-      step: "02",
-    },
-    {
-      icon: CheckCircle,
-      title: "Delivered in 2–4 Hours",
-      description: "Fast delivery anywhere within Lokoja with live tracking.",
-      step: "03",
-    },
-  ]
-
-  const features = [
-    {
-      icon: Clock,
-      title: "Same-day Delivery in Lokoja",
-      description: "Get your parcels delivered within 2-4 hours anywhere in Lokoja.",
-    },
-    // {
-    //   icon: MapPin,
-    //   title: "Live Tracking & WhatsApp Support",
-    //   description: "Track your parcel in real-time and get instant support via WhatsApp.",
-    // },
-    {
-      icon: Users,
-      title: "Trusted by 2,000+ Locals",
-      description: "Join thousands of satisfied customers who trust us with their deliveries.",
-    },
-    {
-      icon: Shield,
-      title: "Professional Dispatch Riders",
-      description: "Our trained and verified riders ensure safe and secure delivery.",
-    },
-  ]
-
-  const testimonials = [
-    {
-      name: "Adamu K.",
-      location: "Ganaja Road",
-      rating: 5,
-      text: "Parcel delivered my documents to Phase II in just 2 hours. Excellent service and very professional riders!",
-    },
-    {
-      name: "Sarah M.",
-      location: "Phase II",
-      rating: 5,
-      text: "I use Parcel for my online business deliveries. They are always on time and my customers love the fast delivery.",
-    },
-    {
-      name: "Ibrahim A.",
-      location: "Felele",
-      rating: 5,
-      text: "Reliable and affordable. The WhatsApp tracking updates are very helpful. Highly recommend Parcel!",
-    },
-  ]
-
-  // WhatsApp handler
-  const handleWhatsAppClick = () => {
-    const phoneNumber = "2348123456789"
-    const message = "Hi! I need help with parcel delivery."
-    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`
-    window.open(whatsappUrl, "_blank")
-  }
-
-  // Hero animation effect
   useEffect(() => {
-    setIsHeroVisible(true)
-  }, [])
+    if (!element) return;
 
-  // Intersection observers for scroll animations
-  useEffect(() => {
-    const observerOptions = { threshold: 0.3 }
-
-    // How It Works observer
-    const howItWorksObserver = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          steps.forEach((_, index) => {
-            setTimeout(() => {
-              setVisibleSteps((prev) => {
-                const newState = [...prev]
-                newState[index] = true
-                return newState
-              })
-            }, index * 200)
-          })
-        }
-      })
-    }, observerOptions)
-
-    // Why Choose Us observer
-    const whyChooseUsObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            features.forEach((_, index) => {
-              setTimeout(() => {
-                setVisibleCards((prev) => {
-                  const newState = [...prev]
-                  newState[index] = true
-                  return newState
-                })
-              }, index * 150)
-            })
-          }
-        })
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsIntersecting(entry.isIntersecting);
       },
-      { threshold: 0.2 },
-    )
+      {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px',
+        ...options,
+      }
+    );
 
-    // Testimonials observer
-    const testimonialsObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            testimonials.forEach((_, index) => {
-              setTimeout(() => {
-                setVisibleTestimonials((prev) => {
-                  const newState = [...prev]
-                  newState[index] = true
-                  return newState
-                })
-              }, index * 200)
-            })
-          }
-        })
-      },
-      { threshold: 0.2 },
-    )
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [element, options]);
 
-    // Business CTA observer
-    const businessObserver = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          setIsBusinessVisible(true)
-        }
-      })
-    }, observerOptions)
+  const ref = (node: HTMLDivElement | null) => {
+    setElement(node);
+  };
 
-    // Attach observers
-    if (howItWorksRef.current) howItWorksObserver.observe(howItWorksRef.current)
-    if (whyChooseUsRef.current) whyChooseUsObserver.observe(whyChooseUsRef.current)
-    if (testimonialsRef.current) testimonialsObserver.observe(testimonialsRef.current)
-    if (businessRef.current) businessObserver.observe(businessRef.current)
+  return [ref, isIntersecting];
+};
 
-    return () => {
-      howItWorksObserver.disconnect()
-      whyChooseUsObserver.disconnect()
-      testimonialsObserver.disconnect()
-      businessObserver.disconnect()
-    }
-  }, [])
+// Animation wrapper component
+import type { ReactNode } from 'react';
+import Image from 'next/image';
+import { Package } from 'lucide-react';
+
+type FadeInProps = {
+  children: ReactNode;
+  className?: string;
+  delay?: number;
+};
+
+const FadeIn = ({ children, className = '', delay = 0 }: FadeInProps) => {
+  const [ref, isIntersecting] = useIntersectionObserver();
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Navigation */}
-      <nav className="bg-white shadow-sm border-b sticky top-0 z-50 transition-all duration-300">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            {/* Logo */}
-            <div className="flex-shrink-0">
-              <h1 className="text-2xl font-bold text-orange-600 hover:text-orange-700 transition-colors duration-300 cursor-pointer">
-                Parcel
-              </h1>
-            </div>
-
-            {/* Desktop Menu */}
-            <div className="hidden lg:block">
-
-            </div>
-
-            {/* Desktop Auth Buttons */}
-            <div className="flex items-center space-x-3">
-              <Button
-                variant="outline"
-                size="sm"
-                className="border-orange-600 text-orange-600 hover:bg-orange-50 transition-all duration-300 hover:scale-105 bg-transparent"
-                onClick={() => router.push("/authentication/signin")}
-              >
-                <User size={16} className="mr-2" />
-                Sign In
-              </Button>
-              <Button
-                size="sm"
-                className="bg-orange-600 hover:bg-orange-700 text-white transition-all duration-300 hover:scale-105 hover:shadow-lg hidden lg:inline-flex"
-                onClick={() => router.push("/authentication/signup/rider")}
-              >
-                Become a Rider
-              </Button>
-            </div>
-          </div>
-        </div>
-      </nav>
-
-      {/* Hero Section */}
-      <section id="home" className="bg-gradient-to-br from-orange-50 to-yellow-50 py-20 lg:py-32 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            {/* Content */}
-            <div
-              className={`text-center lg:text-left transition-all duration-1000 ease-out ${isHeroVisible ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"}`}
-            >
-              <div className="flex items-center justify-center lg:justify-start mb-4 animate-fade-in">
-                <MapPin className="text-orange-600 mr-2 animate-pulse" size={24} />
-                <span className="text-orange-600 font-medium">Serving Lokoja, Nigeria</span>
-              </div>
-
-              <h1 className="text-4xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
-                Lokoja's Trusted{" "}
-                <span className="text-orange-600 bg-gradient-to-r from-orange-600 to-yellow-500 bg-clip-text text-transparent animate-gradient">
-                  Parcel Delivery
-                </span>{" "}
-                Service
-              </h1>
-
-              <p className="text-xl text-gray-600 mb-8 max-w-2xl animate-fade-in-delay">
-                Fast, secure, and same-day delivery within Lokoja. Your packages delivered with care and speed you can
-                trust.
-              </p>
-
-              {/* Main CTAs */}
-              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-8">
-                <Button
-                  size="lg"
-                  className="bg-orange-600 hover:bg-orange-700 text-white px-8 py-3 text-lg transition-all duration-300 hover:scale-105 hover:shadow-lg group"
-                  onClick={() => router.push("/authentication/signup")}
-                >
-                  Send Parcel
-                  <ArrowRight size={20} className="ml-2 group-hover:translate-x-1 transition-transform duration-300" />
-                </Button>
-              </div>
-
-              {/* Account Creation CTAs */}
-              <div className="border-t border-orange-200 pt-6">
-                <p className="text-sm text-gray-600 mb-4">New to Parcel? Join us today!</p>
-                <div className="flex flex-row gap-3 justify-center lg:justify-start">
-                  <Button
-                    variant="outline"
-                    className="border-orange-300 text-orange-700 hover:bg-orange-50 transition-all duration-300 hover:scale-105 group bg-transparent"
-                    onClick={() => router.push("/authentication/signup")}
-                  >
-                    <User size={16} className="mr-2 group-hover:scale-110 transition-transform duration-300" />
-                    Create Account
-                  </Button>
-                  <Button
-                    variant="outline"
-                    className="border-green-300 text-green-700 hover:bg-green-50 transition-all duration-300 hover:scale-105 group bg-transparent"
-                    onClick={() => router.push("/authentication/signup/rider")}
-                  >
-                    <Bike size={16} className="mr-2 group-hover:scale-110 transition-transform duration-300" />
-                    Become a Rider
-                  </Button>
-                </div>
-              </div>
-            </div>
-
-            {/* Illustration */}
-            <div
-              className={`flex justify-center lg:justify-end transition-all duration-1000 ease-out delay-300 ${isHeroVisible ? "translate-x-0 opacity-100" : "translate-x-10 opacity-0"}`}
-            >
-              <div className="relative">
-                <div className="w-80 h-80 bg-gradient-to-br from-orange-100 to-yellow-100 rounded-full flex items-center justify-center animate-float">
-                  <Package size={120} className="text-orange-600 animate-pulse" />
-                </div>
-                <div className="absolute -top-4 -right-4 w-16 h-16 bg-yellow-500 rounded-full flex items-center justify-center animate-bounce">
-                  <span className="text-white font-bold text-sm">2-4h</span>
-                </div>
-                <div className="absolute -bottom-6 -left-6 w-12 h-12 bg-orange-500 rounded-full animate-ping opacity-75"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* How It Works Section */}
-      <section ref={howItWorksRef} className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4 animate-fade-in">How It Works</h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto animate-fade-in-delay">
-              Simple, fast, and reliable. Get your parcels delivered in just 3 easy steps.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {steps.map((step, index) => (
-              <div
-                key={index}
-                className={`text-center relative transition-all duration-700 ease-out hover:scale-105 ${visibleSteps[index] ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"
-                  }`}
-              >
-                {/* Step Number */}
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-orange-100 text-orange-600 rounded-full text-2xl font-bold mb-6 transition-all duration-300 hover:bg-orange-200 hover:scale-110">
-                  {step.step}
-                </div>
-
-                {/* Icon */}
-                <div className="mb-6">
-                  <step.icon
-                    size={48}
-                    className="text-orange-600 mx-auto transition-all duration-300 hover:scale-110 hover:text-orange-700"
-                  />
-                </div>
-
-                {/* Content */}
-                <h3 className="text-xl font-semibold text-gray-900 mb-4 transition-colors duration-300 hover:text-orange-600">
-                  {step.title}
-                </h3>
-                <p className="text-gray-600 leading-relaxed">{step.description}</p>
-
-                {/* Connector Line (hidden on last item) */}
-                {index < steps.length - 1 && (
-                  <div className="hidden md:block absolute top-8 left-1/2 w-full h-0.5 bg-orange-200 transform translate-x-8">
-                    <div className="h-full bg-orange-400 animate-expand-width"></div>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Why Choose Us Section */}
-      <section ref={whyChooseUsRef} className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">Why Choose Parcel?</h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              We're committed to providing the best parcel delivery experience in Lokoja.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {features.map((feature, index) => (
-              <div
-                key={index}
-                className={`bg-white p-8 rounded-xl shadow-sm hover:shadow-lg transition-all duration-500 hover:scale-105 hover:-translate-y-2 group ${visibleCards[index] ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"
-                  }`}
-              >
-                <div className="w-16 h-16 bg-orange-100 rounded-lg flex items-center justify-center mb-6 transition-all duration-300 group-hover:bg-orange-200 group-hover:scale-110">
-                  <feature.icon
-                    size={32}
-                    className="text-orange-600 transition-all duration-300 group-hover:scale-110"
-                  />
-                </div>
-
-                <h3 className="text-lg font-semibold text-gray-900 mb-4 transition-colors duration-300 group-hover:text-orange-600">
-                  {feature.title}
-                </h3>
-
-                <p className="text-gray-600 leading-relaxed">{feature.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonial Section */}
-
-
-      {/* Business CTA Section */}
-      <section ref={businessRef} className="py-20 bg-gradient-to-r from-orange-600 to-orange-700 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            {/* Content */}
-            <div
-              className={`text-center lg:text-left transition-all duration-1000 ease-out ${isBusinessVisible ? "translate-x-0 opacity-100" : "-translate-x-10 opacity-0"}`}
-            >
-              <div className="flex items-center justify-center lg:justify-start mb-4">
-                <Building2 className="text-orange-200 mr-2 animate-pulse" size={24} />
-                <span className="text-orange-200 font-medium">For Businesses</span>
-              </div>
-
-              <h2 className="text-3xl lg:text-4xl font-bold text-white mb-6">Run a Business in Lokoja?</h2>
-
-              <p className="text-xl text-orange-100 mb-8 max-w-2xl">
-                Let us handle your daily deliveries so you can focus on growing your business. Special rates and
-                priority service for business customers.
-              </p>
-
-              <Button
-                size="lg"
-                className="bg-white text-orange-600 hover:bg-gray-100 px-8 py-3 text-lg transition-all duration-300 hover:scale-105 hover:shadow-lg group"
-              >
-                Get Business Plan
-                <ArrowRight size={20} className="ml-2 group-hover:translate-x-1 transition-transform duration-300" />
-              </Button>
-            </div>
-
-            {/* Illustration */}
-            <div
-              className={`flex justify-center lg:justify-end transition-all duration-1000 ease-out delay-300 ${isBusinessVisible ? "translate-x-0 opacity-100" : "translate-x-10 opacity-0"}`}
-            >
-              <div className="relative">
-                <div className="w-64 h-64 bg-white bg-opacity-10 rounded-full flex items-center justify-center animate-float">
-                  <TrendingUp size={80} className="text-white animate-pulse" />
-                </div>
-                <div className="absolute -bottom-4 -left-4 w-16 h-16 bg-yellow-500 rounded-full flex items-center justify-center animate-bounce">
-                  <span className="text-white font-bold text-xs">B2B</span>
-                </div>
-                <div className="absolute -top-6 -right-6 w-8 h-8 bg-white bg-opacity-20 rounded-full animate-ping"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {/* Brand */}
-            <div className="col-span-2 lg:col-span-1">
-              <h3 className="text-2xl font-bold text-orange-400 mb-4">Parcel</h3>
-              <p className="text-gray-400 leading-relaxed">
-                Lokoja's most trusted parcel delivery service. Fast, secure, and reliable delivery within the city.
-              </p>
-            </div>
-
-            {/* Quick Links */}
-            <div>
-              <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
-              <ul className="space-y-2">
-                <li>
-                  <a href="#about" className="text-gray-400 hover:text-orange-400 transition-colors">
-                    About
-                  </a>
-                </li>
-                <li>
-                  <a href="#contact" className="text-gray-400 hover:text-orange-400 transition-colors">
-                    Contact
-                  </a>
-                </li>
-                <li>
-                  <a href="#terms" className="text-gray-400 hover:text-orange-400 transition-colors">
-                    Terms
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            {/* Social Media */}
-            <div>
-              <h4 className="text-lg font-semibold mb-4">Follow Us</h4>
-              <div className="flex space-x-4">
-                <a href="#" className="text-gray-400 hover:text-orange-400 transition-colors">
-                  <Instagram size={24} />
-                </a>
-                <a href="#" className="text-gray-400 hover:text-orange-400 transition-colors">
-                  <Twitter size={24} />
-                </a>
-              </div>
-            </div>
-
-            {/* Contact Info */}
-            <div>
-              <h4 className="text-lg font-semibold mb-4">Contact</h4>
-              <p className="text-gray-400 mb-2">Lokoja, Kogi State</p>
-              <p className="text-gray-400">Nigeria</p>
-            </div>
-          </div>
-
-          <div className="border-t border-gray-800 mt-8 pt-8 text-center">
-            <p className="text-gray-400">© 2024 Parcel. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
-
-      {/* WhatsApp Float */}
-      <button
-        onClick={handleWhatsAppClick}
-        className="fixed bottom-6 right-6 bg-orange-500 hover:bg-orange-600 text-white p-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110 z-50 animate-bounce-slow group"
-        aria-label="Chat with a Dispatcher on WhatsApp"
-      >
-        <MessageCircle size={24} className="group-hover:scale-110 transition-transform duration-300" />
-        <span className="absolute -top-2 -left-2 bg-yellow-500 text-white text-xs px-2 py-1 rounded-full animate-pulse">
-          Chat
-        </span>
-        <div className="absolute inset-0 rounded-full bg-orange-400 animate-ping opacity-30"></div>
-      </button>
+    <div
+      ref={ref}
+      className={`transition-all duration-700 ease-out ${isIntersecting
+        ? 'opacity-100 translate-y-0'
+        : 'opacity-0 translate-y-5'
+        } ${className}`}
+      style={{ transitionDelay: `${delay}ms` }}
+    >
+      {children}
     </div>
-  )
+  );
+};
+
+// Navigation Component
+const Navigation = () => {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 0);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToSection = (sectionId: any) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+  };
+
+  return (
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-white/95 backdrop-blur-md border-b border-gray-100' : 'bg-white/95 backdrop-blur-md'
+      }`}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16">
+          <div className="flex items-center">
+            <div className="flex-shrink-0 flex items-center">
+              <Package className="w-8 h-8 text-yellow-500" />
+              <span className="ml-2 text-xl font-bold text-gray-900">Parcel</span>
+            </div>
+          </div>
+
+          <div className="hidden md:block">
+            <div className="ml-10 flex items-baseline space-x-8">
+              <button onClick={() => scrollToSection('home')} className="text-gray-900 hover:text-yellow-600 px-3 py-2 text-sm font-medium transition-colors">
+                Home
+              </button>
+              <button onClick={() => scrollToSection('how-it-works')} className="text-gray-600 hover:text-yellow-600 px-3 py-2 text-sm font-medium transition-colors">
+                Get Started
+              </button>
+              <button onClick={() => scrollToSection('contact')} className="text-gray-600 hover:text-yellow-600 px-3 py-2 text-sm font-medium transition-colors">
+                Contact
+              </button>
+            </div>
+          </div>
+
+          <div className="flex items-center">
+            <button
+              className="bg-yellow-400 hover:bg-yellow-500 text-white px-6 py-2 rounded-lg text-sm font-medium transition-all transform hover:scale-105 animate-pulse"
+              onClick={() => router.push('/authentication/signin')}
+            >
+              Send Parcel
+            </button>
+          </div>
+        </div>
+      </div>
+    </nav>
+  );
+};
+
+// Hero Section Component
+const HeroSection = () => {
+  const router = useRouter();
+  return (
+    <section id="home" className="relative pt-24 pb-20 bg-gradient-to-br from-yellow-50 to-yellow-100/70 overflow-hidden">
+      {/* Radial Glow */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(251,191,36,0.15)_0%,transparent_50%)] z-0"></div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="h-screen text-center md:text-left grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+          <FadeIn>
+            <h1 className="text-4xl md:text-6xl font-extrabold text-gray-900 leading-relaxed tracking-tight mb-6">
+              Fast and Reliable <br />
+              <span className="text-yellow-500 underline decoration-yellow-400/40 underline-offset-4">
+
+                Delivery Service
+              </span>
+            </h1>
+            <p className="text-lg sm:text-xl text-gray-600 mb-10 max-w-2xl mx-auto leading-relaxed">
+              Send packages across the country with real-time tracking and guaranteed delivery times. Experience the future of logistics with Parcel.
+            </p>
+
+            <button className="bg-yellow-500 hover:bg-yellow-600 text-white px-8 py-4 rounded-xl text-lg font-semibold shadow-md hover:shadow-lg transition-all transform hover:scale-105 hover:-translate-y-1"
+              onClick={() => router.push('/authentication/signup')}>
+              Book Pickup Now
+            </button>
+          </FadeIn>
+
+          <FadeIn delay={400}>
+            <div className="mt-20 max-w-4xl mx-auto">
+              {/* Optional illustrative image */}
+              <Image
+                src={bike}
+                alt="Rider delivering parcel"
+                className="w-full h-auto"
+              />
+            </div>
+          </FadeIn>
+        </div>
+      </div>
+
+      {/* Optional animated shapes or floating gradient circles */}
+      <div className="absolute -top-20 -right-20 w-96 h-96 bg-yellow-100 rounded-full blur-3xl opacity-30 z-0"></div>
+    </section>
+
+  );
+};
+
+// How It Works Section Component
+const HowItWorksSection = () => {
+  const steps = [
+    {
+      icon: (
+        <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+        </svg>
+      ),
+      title: "1. Schedule a Pickup",
+      description: "Call us or book online. Tell us when and where to pick up your parcel."
+    },
+    {
+      icon: (
+        <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      ),
+      title: "2. We Pick It Up Instantly",
+      description: "Our professional riders arrive promptly to collect your parcel safely."
+    },
+    {
+      icon: (
+        <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z" />
+        </svg>
+      ),
+      title: "3. Delivered in 2–4 Hours",
+      description: "Fast delivery anywhere in Lokoja. Track your parcel in real-time."
+    }
+  ];
+
+  return (
+    <section id="how-it-works" className="py-20 bg-gray-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <FadeIn>
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">How It Works</h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">Simple, fast, and reliable delivery in three easy steps</p>
+          </div>
+        </FadeIn>
+
+        <div className="grid md:grid-cols-3 gap-8">
+          {steps.map((step, index) => (
+            <FadeIn key={index} delay={index * 200}>
+              <div className="text-center transition-transform hover:scale-105 hover:-translate-y-2">
+                <div className="w-16 h-16 bg-yellow-400 rounded-full flex items-center justify-center mx-auto mb-6">
+                  {step.icon}
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900 mb-3">{step.title}</h3>
+                <p className="text-gray-600">{step.description}</p>
+              </div>
+            </FadeIn>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+// Why Choose Us Section Component
+const WhyChooseUsSection = () => {
+  const features = [
+    {
+      icon: (
+        <svg className="w-8 h-8 text-yellow-600" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M10 2L3 7v11a1 1 0 001 1h3a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1h3a1 1 0 001-1V7l-7-5z" />
+        </svg>
+      ),
+      title: "Same-day Delivery",
+      description: "Fast delivery within Lokoja in just 2-4 hours. No waiting days for your parcel."
+    },
+    {
+      icon: (
+        <svg className="w-8 h-8 text-yellow-600" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
+        </svg>
+      ),
+      title: "Trusted by 2,000+ Locals",
+      description: "Join thousands of satisfied customers who trust us with their deliveries."
+    },
+    {
+      icon: (
+        <svg className="w-8 h-8 text-yellow-600" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      ),
+      title: "Professional Dispatch Riders",
+      description: "Trained, reliable, and courteous riders who handle your parcels with care."
+    }
+  ];
+
+  return (
+    <section className="py-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <FadeIn>
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Why Choose Parcel?</h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">Trusted by thousands of locals across Lokoja</p>
+          </div>
+        </FadeIn>
+
+        <div className="grid md:grid-cols-3 gap-8">
+          {features.map((feature, index) => (
+            <FadeIn key={index} delay={index * 200}>
+              <div className="bg-white rounded-xl shadow-lg p-8 text-center transition-all hover:shadow-xl hover:scale-105 hover:-translate-y-2">
+                <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                  {feature.icon}
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900 mb-3">{feature.title}</h3>
+                <p className="text-gray-600">{feature.description}</p>
+              </div>
+            </FadeIn>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+// Testimonials Section Component
+const TestimonialsSection = () => {
+  const testimonials = [
+    {
+      initials: "AM",
+      name: "Aisha M.",
+      location: "Ganaja Road",
+      text: "Super fast delivery! My package arrived in just 2 hours. The rider was very professional and polite."
+    },
+    {
+      initials: "JO",
+      name: "John O.",
+      location: "Phase II",
+      text: "I run a small business and Parcel has been a lifesaver. Reliable, affordable, and always on time!"
+    },
+    {
+      initials: "FK",
+      name: "Fatima K.",
+      location: "Felele",
+      text: "The tracking feature is amazing! I could see exactly where my parcel was at all times. Highly recommended!"
+    }
+  ];
+
+  return (
+    <section className="py-20 bg-gray-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <FadeIn>
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">What Our Customers Say</h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">Real feedback from real people across Lokoja</p>
+          </div>
+        </FadeIn>
+
+        <div className="grid md:grid-cols-3 gap-8">
+          {testimonials.map((testimonial, index) => (
+            <FadeIn key={index} delay={index * 200}>
+              <div className="bg-white rounded-xl shadow-lg p-8 transition-all hover:shadow-xl hover:scale-105 hover:-translate-y-2">
+                <div className="flex items-center mb-4">
+                  <div className="w-12 h-12 bg-yellow-400 rounded-full flex items-center justify-center text-white font-bold">
+                    {testimonial.initials}
+                  </div>
+                  <div className="ml-4">
+                    <h4 className="font-semibold text-gray-900">{testimonial.name}</h4>
+                    <div className="flex items-center">
+                      <span className="text-sm text-gray-600">{testimonial.location}</span>
+                      <span className="ml-2 bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded">Verified</span>
+                    </div>
+                  </div>
+                </div>
+                <p className="text-gray-600 italic">"{testimonial.text}"</p>
+              </div>
+            </FadeIn>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+// Business CTA Section Component
+const BusinessCTASection = () => {
+  return (
+    <section className="py-20 bg-gradient-to-r from-yellow-300 to-yellow-400">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <FadeIn>
+          <div className="text-center">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Run a Business in Lokoja?</h2>
+            <p className="text-xl text-gray-700 mb-8 max-w-2xl mx-auto">
+              Let us handle your daily deliveries so you can focus on growing your business. Special rates for businesses.
+            </p>
+            <button className="bg-white text-yellow-600 hover:bg-gray-50 px-8 py-4 rounded-lg text-lg font-medium transition-all transform hover:scale-105 hover:-translate-y-1 shadow-lg">
+              Get Business Partnership
+            </button>
+          </div>
+        </FadeIn>
+      </div>
+    </section>
+  );
+};
+
+// Footer Component
+const Footer = () => {
+  return (
+    <footer id="contact" className="bg-gray-900 text-white py-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid md:grid-cols-4 gap-8">
+          <div className="col-span-2">
+            <div className="flex items-center mb-4">
+              <div className="w-8 h-8 bg-yellow-400 rounded-lg flex items-center justify-center">
+                <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z" />
+                </svg>
+              </div>
+              <span className="ml-2 text-2xl font-bold">Parcel</span>
+            </div>
+            <p className="text-gray-400 mb-4">
+              Lokoja's trusted parcel delivery service. Fast, secure, and reliable delivery across the city.
+            </p>
+            <div className="flex space-x-4">
+              <a href="#" className="text-gray-400 hover:text-yellow-400 transition-colors">
+                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z" />
+                </svg>
+              </a>
+              <a href="#" className="text-gray-400 hover:text-yellow-400 transition-colors">
+                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.174-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.347-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.402.163-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.357-.629-2.744-1.378l-.628 2.378c-.226.869-.835 1.958-1.244 2.621.937.29 1.931.446 2.962.446 6.624 0 11.99-5.367 11.99-11.987C24.007 5.367 18.641.001 12.017.001z" />
+                </svg>
+              </a>
+            </div>
+          </div>
+
+          <div>
+            <h4 className="font-semibold mb-4">Quick Links</h4>
+            <ul className="space-y-2 text-gray-400">
+              <li><a href="#" className="hover:text-yellow-400 transition-colors">About</a></li>
+              <li><a href="#" className="hover:text-yellow-400 transition-colors">Contact</a></li>
+              <li><a href="#" className="hover:text-yellow-400 transition-colors">Terms</a></li>
+              <li><a href="#" className="hover:text-yellow-400 transition-colors">Privacy</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="font-semibold mb-4">Contact Info</h4>
+            <ul className="space-y-2 text-gray-400">
+              <li>📍 Lokoja, Kogi State</li>
+              <li>📞 +234 XXX XXX XXXX</li>
+              <li>✉️ hello@parcel.ng</li>
+              <li>🕒 24/7 Service</li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
+          <p>&copy; 2025 Parcel. All rights reserved. Proudly serving Lokoja, Nigeria.</p>
+        </div>
+      </div>
+    </footer>
+  );
+};
+
+// Main App Component
+export default function ParcelApp() {
+  return (
+    <div className={`min-h-screen ${inter.className}`}>
+      <Navigation />
+      <HeroSection />
+      <HowItWorksSection />
+      <WhyChooseUsSection />
+      {/* <TestimonialsSection /> */}
+      <BusinessCTASection />
+      <Footer />
+    </div>
+  );
 }
