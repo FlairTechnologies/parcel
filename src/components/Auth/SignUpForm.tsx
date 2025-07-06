@@ -152,13 +152,14 @@ const SignUpForm = () => {
                 alt="Sign In Background"
                 layout="fill"
                 objectFit="cover"
-              // className="opacity-50"
+                // className="opacity-50"
               />
             </div>
-            <div className="z-10 text-center">
+            <div className="z-10 text-center text-white">
               <h2 className="text-6xl font-bold mb-4">Parcel</h2>
               <p className="text-2xl mb-8 opacity-90 leading-relaxed">
-                Fast access to tracking, pickups, and your delivery dashboard — just a login away.
+                Quick signup, access your dashboard instantly, initiate and view
+                deliveries.
               </p>
             </div>
           </div>
@@ -198,11 +199,25 @@ const SignUpForm = () => {
                 {formData.password && (
                   <div className="text-sm text-gray-700 ">
                     <ul className="space-y-1 flex flex-row flex-wrap gap-x-2">
-                      <li className="flex items-center gap-2 border border-gray-200 shadow-sm bg-gray-50 px-4 rounded-full">{getIcon(passwordCriteria.minLength)} At least 6 characters</li>
-                      <li className="flex items-center gap-2 border border-gray-200 shadow-sm bg-gray-50 px-4 rounded-full">{getIcon(passwordCriteria.uppercase)} One uppercase letter</li>
-                      <li className="flex items-center gap-2 border border-gray-200 shadow-sm bg-gray-50 px-4 rounded-full">{getIcon(passwordCriteria.lowercase)} One lowercase letter</li>
-                      <li className="flex items-center gap-2 border border-gray-200 shadow-sm bg-gray-50 px-4 rounded-full">{getIcon(passwordCriteria.numeric)} One number</li>
-                      <li className="flex items-center gap-2 border border-gray-200 shadow-sm bg-gray-50 px-4 rounded-full">{getIcon(passwordCriteria.specialChar)} One special character</li>
+                      <li className="flex items-center gap-2 border border-gray-200 shadow-sm bg-gray-50 px-4 rounded-full">
+                        {getIcon(passwordCriteria.minLength)} At least 6
+                        characters
+                      </li>
+                      <li className="flex items-center gap-2 border border-gray-200 shadow-sm bg-gray-50 px-4 rounded-full">
+                        {getIcon(passwordCriteria.uppercase)} One uppercase
+                        letter
+                      </li>
+                      <li className="flex items-center gap-2 border border-gray-200 shadow-sm bg-gray-50 px-4 rounded-full">
+                        {getIcon(passwordCriteria.lowercase)} One lowercase
+                        letter
+                      </li>
+                      <li className="flex items-center gap-2 border border-gray-200 shadow-sm bg-gray-50 px-4 rounded-full">
+                        {getIcon(passwordCriteria.numeric)} One number
+                      </li>
+                      <li className="flex items-center gap-2 border border-gray-200 shadow-sm bg-gray-50 px-4 rounded-full">
+                        {getIcon(passwordCriteria.specialChar)} One special
+                        character
+                      </li>
                     </ul>
                   </div>
                 )}

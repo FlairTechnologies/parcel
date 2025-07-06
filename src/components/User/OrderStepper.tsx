@@ -1,7 +1,16 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import InputField from "../ui/InputField";
-import { Check, ArrowRight, ArrowLeft, Package, User, MapPin, CreditCard, RefreshCw } from "lucide-react";
+import {
+  Check,
+  ArrowRight,
+  ArrowLeft,
+  Package,
+  User,
+  MapPin,
+  CreditCard,
+  RefreshCw,
+} from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -99,10 +108,12 @@ const Stepper = () => {
         // Handle the specific API response format: array of strings
         if (Array.isArray(data)) {
           // Convert string array to Address objects
-          const addressObjects = data.map((addressName: string, index: number) => ({
-            id: `address-${index}`,
-            name: addressName,
-          }));
+          const addressObjects = data.map(
+            (addressName: string, index: number) => ({
+              id: `address-${index}`,
+              name: addressName,
+            })
+          );
           setAddresses(addressObjects);
         } else {
           console.warn("Unexpected addresses API response structure:", data);
@@ -111,7 +122,9 @@ const Stepper = () => {
       } else {
         toast({
           title: "Warning",
-          description: data.error || "Failed to fetch addresses. Using fallback locations.",
+          description:
+            data.error ||
+            "Failed to fetch addresses. Using fallback locations.",
           variant: "destructive",
         });
         setAddresses(fallbackAddresses);
@@ -159,8 +172,12 @@ const Stepper = () => {
         if (!formData.toLocation) {
           newErrors.toLocation = "Receiver's location is required";
         }
-        if (formData.fromLocation === formData.toLocation && formData.fromLocation) {
-          newErrors.toLocation = "Pickup and delivery locations must be different";
+        if (
+          formData.fromLocation === formData.toLocation &&
+          formData.fromLocation
+        ) {
+          newErrors.toLocation =
+            "Pickup and delivery locations must be different";
         }
         break;
     }
@@ -176,7 +193,8 @@ const Stepper = () => {
       if (!reference) {
         toast({
           title: "Error",
-          description: "Cannot find reference, are you sure you placed an order?",
+          description:
+            "Cannot find reference, are you sure you placed an order?",
         });
         return;
       }
@@ -337,7 +355,7 @@ const Stepper = () => {
   ) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-    
+
     // Clear error for this field when user starts typing
     if (errors[name]) {
       setErrors({ ...errors, [name]: "" });
@@ -346,7 +364,7 @@ const Stepper = () => {
 
   const handleSelectChange = (name: string, value: string) => {
     setFormData({ ...formData, [name]: value });
-    
+
     // Clear error for this field when user selects
     if (errors[name]) {
       setErrors({ ...errors, [name]: "" });
@@ -401,7 +419,10 @@ const Stepper = () => {
               {steps.map((step, index) => {
                 const StepIcon = step.icon;
                 return (
-                  <div key={step.id} className="flex flex-col items-center flex-1">
+                  <div
+                    key={step.id}
+                    className="flex flex-col items-center flex-1"
+                  >
                     <div className="flex items-center w-full">
                       <div
                         className={`w-12 h-12 rounded-full flex items-center justify-center transition-all duration-500 ${
@@ -479,16 +500,17 @@ const Stepper = () => {
                     <h3 className="text-2xl font-bold text-gray-800 mb-2">
                       Package Information
                     </h3>
-                    <p className="text-gray-600">
-                      Tell us about what you're sending
+                    <p className="text-yellow-600">
+                      Please note that we currently do not deliver packages that
+                      exceed 15 kg (approximately 33 lbs)
                     </p>
                   </div>
-                  
+
                   <div className="space-y-5">
                     <InputField
                       type="text"
                       name="packageName"
-                      placeholder="Package Name (Optional)"
+                      placeholder="Package Name"
                       value={formData.packageName}
                       onChange={handleChange}
                     />
@@ -499,11 +521,15 @@ const Stepper = () => {
                         value={formData.description}
                         onChange={handleChange}
                         className={`w-full border p-4 rounded-xl focus:ring-2 focus:ring-[#F9CA44] focus:border-transparent outline-none transition-all resize-none h-32 ${
-                          errors.description ? "border-red-500" : "border-gray-300"
+                          errors.description
+                            ? "border-red-500"
+                            : "border-gray-300"
                         }`}
                       />
                       {errors.description && (
-                        <p className="text-red-500 text-sm mt-1">{errors.description}</p>
+                        <p className="text-red-500 text-sm mt-1">
+                          {errors.description}
+                        </p>
                       )}
                     </div>
                   </div>
@@ -522,12 +548,12 @@ const Stepper = () => {
                       Who will receive this package?
                     </p>
                   </div>
-                  
+
                   <div className="space-y-5">
                     <InputField
                       type="text"
                       name="receiverName"
-                      placeholder="Receiver's Name (Optional)"
+                      placeholder="Receiver's Name"
                       value={formData.receiverName}
                       onChange={handleChange}
                     />
@@ -547,7 +573,9 @@ const Stepper = () => {
                         onChange={handleChange}
                       />
                       {errors.receiverPhone && (
-                        <p className="text-red-500 text-sm mt-1">{errors.receiverPhone}</p>
+                        <p className="text-red-500 text-sm mt-1">
+                          {errors.receiverPhone}
+                        </p>
                       )}
                     </div>
                   </div>
@@ -566,23 +594,29 @@ const Stepper = () => {
                       Where should we pick up and deliver?
                     </p>
                   </div>
-                  
+
                   <div className="space-y-6">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
                         Pickup Location *
                       </label>
                       <Select
-                        onValueChange={(value) => handleSelectChange("fromLocation", value)}
+                        onValueChange={(value) =>
+                          handleSelectChange("fromLocation", value)
+                        }
                         disabled={addressesLoading}
                       >
-                        <SelectTrigger className={`w-full h-12 ${errors.fromLocation ? "border-red-500" : ""}`}>
-                          <SelectValue 
+                        <SelectTrigger
+                          className={`w-full h-12 ${
+                            errors.fromLocation ? "border-red-500" : ""
+                          }`}
+                        >
+                          <SelectValue
                             placeholder={
-                              addressesLoading 
-                                ? "Loading addresses..." 
+                              addressesLoading
+                                ? "Loading addresses..."
                                 : "Select pickup location"
-                            } 
+                            }
                           />
                         </SelectTrigger>
                         <SelectContent>
@@ -592,8 +626,8 @@ const Stepper = () => {
                             </SelectItem>
                           ) : addresses.length > 0 ? (
                             addresses.map((address, index) => (
-                              <SelectItem 
-                                key={address.id || `address-${index}`} 
+                              <SelectItem
+                                key={address.id || `address-${index}`}
                                 value={address.name}
                               >
                                 {address.name}
@@ -612,7 +646,9 @@ const Stepper = () => {
                         </SelectContent>
                       </Select>
                       {errors.fromLocation && (
-                        <p className="text-red-500 text-sm mt-1">{errors.fromLocation}</p>
+                        <p className="text-red-500 text-sm mt-1">
+                          {errors.fromLocation}
+                        </p>
                       )}
                     </div>
 
@@ -621,16 +657,22 @@ const Stepper = () => {
                         Delivery Location *
                       </label>
                       <Select
-                        onValueChange={(value) => handleSelectChange("toLocation", value)}
+                        onValueChange={(value) =>
+                          handleSelectChange("toLocation", value)
+                        }
                         disabled={addressesLoading}
                       >
-                        <SelectTrigger className={`w-full h-12 ${errors.toLocation ? "border-red-500" : ""}`}>
-                          <SelectValue 
+                        <SelectTrigger
+                          className={`w-full h-12 ${
+                            errors.toLocation ? "border-red-500" : ""
+                          }`}
+                        >
+                          <SelectValue
                             placeholder={
-                              addressesLoading 
-                                ? "Loading addresses..." 
+                              addressesLoading
+                                ? "Loading addresses..."
                                 : "Select delivery location"
-                            } 
+                            }
                           />
                         </SelectTrigger>
                         <SelectContent>
@@ -640,8 +682,8 @@ const Stepper = () => {
                             </SelectItem>
                           ) : addresses.length > 0 ? (
                             addresses.map((address, index) => (
-                              <SelectItem 
-                                key={address.id || `address-to-${index}`} 
+                              <SelectItem
+                                key={address.id || `address-to-${index}`}
                                 value={address.name}
                               >
                                 {address.name}
@@ -660,7 +702,9 @@ const Stepper = () => {
                         </SelectContent>
                       </Select>
                       {errors.toLocation && (
-                        <p className="text-red-500 text-sm mt-1">{errors.toLocation}</p>
+                        <p className="text-red-500 text-sm mt-1">
+                          {errors.toLocation}
+                        </p>
                       )}
                     </div>
 
@@ -694,38 +738,68 @@ const Stepper = () => {
                     <div className="bg-gradient-to-br from-gray-50 to-gray-100 p-6 rounded-2xl">
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="bg-white p-4 rounded-xl">
-                          <p className="text-sm font-medium text-gray-500 mb-1">Order ID</p>
-                          <p className="font-semibold text-gray-900">{order.orderId || "-"}</p>
+                          <p className="text-sm font-medium text-gray-500 mb-1">
+                            Order ID
+                          </p>
+                          <p className="font-semibold text-gray-900">
+                            {order.orderId || "-"}
+                          </p>
                         </div>
                         <div className="bg-white p-4 rounded-xl">
-                          <p className="text-sm font-medium text-gray-500 mb-1">Package Description</p>
-                          <p className="font-semibold text-gray-900">{order.descr || "-"}</p>
+                          <p className="text-sm font-medium text-gray-500 mb-1">
+                            Package Description
+                          </p>
+                          <p className="font-semibold text-gray-900">
+                            {order.descr || "-"}
+                          </p>
                         </div>
                         <div className="bg-white p-4 rounded-xl">
-                          <p className="text-sm font-medium text-gray-500 mb-1">Receiver's Name</p>
-                          <p className="font-semibold text-gray-900">{order.receiverName || "-"}</p>
+                          <p className="text-sm font-medium text-gray-500 mb-1">
+                            Receiver's Name
+                          </p>
+                          <p className="font-semibold text-gray-900">
+                            {order.receiverName || "-"}
+                          </p>
                         </div>
                         <div className="bg-white p-4 rounded-xl">
-                          <p className="text-sm font-medium text-gray-500 mb-1">Receiver's Phone</p>
-                          <p className="font-semibold text-gray-900">{order.receiverPhone || "-"}</p>
+                          <p className="text-sm font-medium text-gray-500 mb-1">
+                            Receiver's Phone
+                          </p>
+                          <p className="font-semibold text-gray-900">
+                            {order.receiverPhone || "-"}
+                          </p>
                         </div>
                         <div className="bg-white p-4 rounded-xl">
-                          <p className="text-sm font-medium text-gray-500 mb-1">From Address</p>
-                          <p className="font-semibold text-gray-900">{order.address || "-"}</p>
+                          <p className="text-sm font-medium text-gray-500 mb-1">
+                            From Address
+                          </p>
+                          <p className="font-semibold text-gray-900">
+                            {order.address || "-"}
+                          </p>
                         </div>
                         <div className="bg-white p-4 rounded-xl">
-                          <p className="text-sm font-medium text-gray-500 mb-1">To Address</p>
-                          <p className="font-semibold text-gray-900">{order.receiversAddress || "-"}</p>
+                          <p className="text-sm font-medium text-gray-500 mb-1">
+                            To Address
+                          </p>
+                          <p className="font-semibold text-gray-900">
+                            {order.receiversAddress || "-"}
+                          </p>
                         </div>
                         <div className="bg-white p-4 rounded-xl">
-                          <p className="text-sm font-medium text-gray-500 mb-1">Order Status</p>
+                          <p className="text-sm font-medium text-gray-500 mb-1">
+                            Order Status
+                          </p>
                           <span className="inline-flex px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
                             {order.status || "Pending"}
                           </span>
                         </div>
                         <div className="bg-white p-4 rounded-xl">
-                          <p className="text-sm font-medium text-gray-500 mb-1">Total Cost</p>
-                          <p className="text-2xl font-bold text-green-600">₦{order.cost || "0"}</p>
+                          <p className="text-sm font-medium text-gray-500 mb-1">
+                            Total Cost
+                          </p>
+                          <p className="text-2xl font-bold text-green-600">
+                            ₦{order.cost || "0"}
+                          </p>
                         </div>
                       </div>
                     </div>

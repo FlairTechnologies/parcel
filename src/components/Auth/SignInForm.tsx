@@ -6,21 +6,28 @@ import { useState } from "react";
 import { Loader } from "../ui/custom/loader";
 import { useAuth } from "@/context/AuthContext";
 import Image from "next/image";
-import backgroundImage from "../../../public/authentication/yellow-bg.png"
+import backgroundImage from "../../../public/authentication/yellow-bg.png";
 
 // Error/Success Message Component
-export const MessageDisplay = ({ message, type, isVisible }: {
+export const MessageDisplay = ({
+  message,
+  type,
+  isVisible,
+}: {
   message: string;
-  type: 'success' | 'error';
+  type: "success" | "error";
   isVisible: boolean;
 }) => {
   if (!isVisible || !message) return null;
 
   return (
-    <div className={`text-sm font-medium mb-4 transition-all duration-300 w-full p-3 rounded-md ${type === 'success'
-      ? 'text-green-600 border border-green-200 bg-green-50'
-      : 'text-red-500 border border-red-200 bg-red-50'
-      }`}>
+    <div
+      className={`text-sm font-medium mb-4 transition-all duration-300 w-full p-3 rounded-md ${
+        type === "success"
+          ? "text-green-600 border border-green-200 bg-green-50"
+          : "text-red-500 border border-red-200 bg-red-50"
+      }`}
+    >
       {message}
     </div>
   );
@@ -52,13 +59,13 @@ const SignInForm = () => {
 
     // Auto-hide after 4 seconds
     setTimeout(() => {
-      setMessage(prev => ({ ...prev, isVisible: false }));
+      setMessage((prev) => ({ ...prev, isVisible: false }));
     }, 4000);
   };
 
   // Hide message function
   const hideMessage = () => {
-    setMessage(prev => ({ ...prev, isVisible: false }));
+    setMessage((prev) => ({ ...prev, isVisible: false }));
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -115,7 +122,6 @@ const SignInForm = () => {
         <div className="bg-white overflow-hidden w-full h-full flex">
           {/* Left Panel - Welcome Back */}
           <div className="hidden md:flex md:w-2/3 bg-gradient-to-br from-yellow-400 via-yellow-500 to-amber-600 text-white p-12 flex-col justify-center items-center relative">
-
             <div className="absolute inset-0 bg-black bg-opacity-10 w-full h-full">
               <Image
                 src={backgroundImage}
@@ -129,7 +135,8 @@ const SignInForm = () => {
               <h2 className="text-6xl font-bold mb-4">Parcel</h2>
               {/* <h3 className="text-2xl font-semibold mb-6">Welcome Back!</h3> */}
               <p className="text-2xl mb-8 opacity-90 leading-relaxed">
-                Fast access to tracking, pickups, and your delivery dashboard — just a login away.
+                Quick signin, access your dashboard instantly, initiate and view
+                deliveries.
               </p>
             </div>
           </div>
@@ -141,7 +148,10 @@ const SignInForm = () => {
 
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label
+                    htmlFor="email"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
                     Email
                   </label>
                   <InputField
@@ -154,7 +164,10 @@ const SignInForm = () => {
                 </div>
 
                 <div>
-                  <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label
+                    htmlFor="password"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
                     Password
                   </label>
                   <InputField
@@ -190,7 +203,10 @@ const SignInForm = () => {
               <div className="mt-4 text-center">
                 <p className="text-sm text-gray-600">
                   Don't have an account?{" "}
-                  <a href="/authentication/signup" className="text-yellow-500 hover:text-yellow-600 font-medium">
+                  <a
+                    href="/authentication/signup"
+                    className="text-yellow-500 hover:text-yellow-600 font-medium"
+                  >
                     Sign Up
                   </a>
                 </p>
@@ -198,7 +214,7 @@ const SignInForm = () => {
             </div>
           </div>
         </div>
-      </div >
+      </div>
     </>
   );
 };
