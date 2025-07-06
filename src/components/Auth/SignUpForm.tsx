@@ -1,16 +1,28 @@
 "use client";
+
 import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import Button from "../ui/custom/button";
 import InputField from "../ui/InputField";
 import { useRouter } from "next/navigation";
-import { useToast } from "@/hooks/use-toast";
 import { Loader } from "../ui/custom/loader";
+import { MessageDisplay } from "./SignInForm";
+import backgroundImage from "../../../public/authentication/black-bg.png";
+import Image from "next/image";
+import { CheckCircle, XCircle } from "lucide-react";
 
 const SignUpForm = () => {
   const router = useRouter();
-  const { toast } = useToast();
   const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState<{
+    text: string;
+    type: "error" | "success";
+    isVisible: boolean;
+  }>({
+    text: "",
+    type: "error",
+    isVisible: false,
+  });
 
   const [formData, setFormData] = useState({
     username: "",
@@ -65,24 +77,26 @@ const SignUpForm = () => {
     e.preventDefault();
 
     if (!formData.agreeToTerms) {
-      toast({
-        title: "Validation Error",
-        description: "You have to agree to terms to proceed",
-        variant: "destructive",
+      setMessage({
+        text: "You have to agree to the terms to proceed.",
+        type: "error",
+        isVisible: true,
       });
       return;
     }
 
     if (Object.values(passwordCriteria).includes(false)) {
-      toast({
-        title: "Validation Error",
-        description: "Password does not meet the required criteria.",
-        variant: "destructive",
+      setMessage({
+        text: "Password does not meet all the required criteria.",
+        type: "error",
+        isVisible: true,
       });
       return;
     }
 
     setLoading(true);
+    setMessage({ ...message, isVisible: false });
+
     try {
       const { email, password, username } = formData;
 
@@ -92,128 +106,152 @@ const SignUpForm = () => {
         body: JSON.stringify({ email, password, username }),
       });
 
+      const data = await response.json();
+
       if (response.ok) {
         localStorage.setItem("v-email-auth", email);
+        localStorage.setItem("next-route", "/user/home");
         router.replace("/authentication/verify");
       } else {
-        const data = await response.json();
-        toast({
-          title: "Error",
-          description: data.error,
-          variant: "destructive",
+        setMessage({
+          text: data.error || "Registration failed.",
+          type: "error",
+          isVisible: true,
         });
       }
     } catch (error) {
-      toast({
-        title: "Error",
-        description: "Something went wrong. Please try again later.",
-        variant: "destructive",
+      console.error("Error during registration:", error);
+      setMessage({
+        text: "Something went wrong. Please try again later.",
+        type: "error",
+        isVisible: true,
       });
     } finally {
       setLoading(false);
     }
   };
 
+  const getIcon = (condition: boolean) => {
+    return condition ? (
+      <CheckCircle className="w-4 h-4 text-green-500" />
+    ) : (
+      <XCircle className="w-4 h-4 text-red-500" />
+    );
+  };
+
   return (
     <>
       {loading && <Loader />}
-      <div className="p-8 py-12 md:py-6 bg-white rounded-lg w-full md:max-w-lg mx-auto h-auto md:shadow-md">
-        <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-yellow-600 to-amber-600 bg-clip-text text-transparent mb-2">Let's Get Started</h2>
-        <p className="mb-6">Fill in the fields to get started.</p>
-        <form
-          className="flex flex-col gap-4 w-full mt-7"
-          onSubmit={handleSubmit}
-        >
-          <InputField
-            type="text"
-            placeholder="Username"
-            name="username"
-            value={formData.username}
-            onChange={handleChange}
-          />
-          <InputField
-            type="email"
-            placeholder="Email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-          />
-          <InputField
-            type="password"
-            placeholder="Password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-          />
-          {!Object.values(passwordCriteria).every(Boolean) && (
-            <div className="text-sm text-gray-600 mt-1">
-              <ul>
-                <li
-                  className={`${
-                    passwordCriteria.minLength
-                      ? "text-green-600"
-                      : "text-red-600"
-                  }`}
-                >
-                  At least 6 characters
-                </li>
-                <li
-                  className={`${
-                    passwordCriteria.uppercase
-                      ? "text-green-600"
-                      : "text-red-600"
-                  }`}
-                >
-                  At least one uppercase letter
-                </li>
-                <li
-                  className={`${
-                    passwordCriteria.lowercase
-                      ? "text-green-600"
-                      : "text-red-600"
-                  }`}
-                >
-                  At least one lowercase letter
-                </li>
-                <li
-                  className={`${
-                    passwordCriteria.numeric ? "text-green-600" : "text-red-600"
-                  }`}
-                >
-                  At least one numeric character
-                </li>
-                <li
-                  className={`${
-                    passwordCriteria.specialChar
-                      ? "text-green-600"
-                      : "text-red-600"
-                  }`}
-                >
-                  At least one special character
-                </li>
-              </ul>
+      <div className="flex items-center justify-center h-[100vh]">
+        <div className="bg-white overflow-hidden w-full h-full flex">
+          {/* Left Panel */}
+          <div className="hidden md:flex md:w-2/3 text-yellow-400 p-12 flex-col justify-center items-center relative">
+            <div className="absolute inset-0 w-full h-full">
+              <Image
+                src={backgroundImage}
+                alt="Sign In Background"
+                layout="fill"
+                objectFit="cover"
+              // className="opacity-50"
+              />
             </div>
-          )}
-          <div className="flex items-center gap-2 my-3">
-            <input
-              type="checkbox"
-              name="agreeToTerms"
-              checked={formData.agreeToTerms}
-              onChange={handleChange}
-            />
-            <p className="text-sm">
-              I agree to the Terms and Conditions & Privacy Policy
-            </p>
+            <div className="z-10 text-center">
+              <h2 className="text-6xl font-bold mb-4">Parcel</h2>
+              <p className="text-2xl mb-8 opacity-90 leading-relaxed">
+                Fast access to tracking, pickups, and your delivery dashboard — just a login away.
+              </p>
+            </div>
           </div>
-          <div className="mb-[50px] md:mb-2" />
-          <Button label="Proceed" />
-        </form>
-        <p className="text-center text-sm mt-4">
-          Already have an account?{" "}
-          <a href="/authentication/signin" className="text-yellow-400">
-            Sign In
-          </a>
-        </p>
+
+          {/* Right Panel */}
+          <div className="w-full h-full grid place-items-center md:w-1/2 p-8 md:p-12">
+            <div className="w-full md:w-3/4 mx-auto">
+              <h2 className="text-3xl font-bold text-gray-800 mb-4">Sign Up</h2>
+
+              <form
+                className="flex flex-col gap-4 w-full mt-7"
+                onSubmit={handleSubmit}
+              >
+                <InputField
+                  type="text"
+                  placeholder="Username"
+                  name="username"
+                  value={formData.username}
+                  onChange={handleChange}
+                />
+                <InputField
+                  type="email"
+                  placeholder="Email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                />
+                <InputField
+                  type="password"
+                  placeholder="Password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                />
+
+                {/* Password Criteria */}
+                {formData.password && (
+                  <div className="text-sm text-gray-700 ">
+                    <ul className="space-y-1 flex flex-row flex-wrap gap-x-2">
+                      <li className="flex items-center gap-2 border border-gray-200 shadow-sm bg-gray-50 px-4 rounded-full">{getIcon(passwordCriteria.minLength)} At least 6 characters</li>
+                      <li className="flex items-center gap-2 border border-gray-200 shadow-sm bg-gray-50 px-4 rounded-full">{getIcon(passwordCriteria.uppercase)} One uppercase letter</li>
+                      <li className="flex items-center gap-2 border border-gray-200 shadow-sm bg-gray-50 px-4 rounded-full">{getIcon(passwordCriteria.lowercase)} One lowercase letter</li>
+                      <li className="flex items-center gap-2 border border-gray-200 shadow-sm bg-gray-50 px-4 rounded-full">{getIcon(passwordCriteria.numeric)} One number</li>
+                      <li className="flex items-center gap-2 border border-gray-200 shadow-sm bg-gray-50 px-4 rounded-full">{getIcon(passwordCriteria.specialChar)} One special character</li>
+                    </ul>
+                  </div>
+                )}
+
+                <MessageDisplay
+                  message={message.text}
+                  type={message.type}
+                  isVisible={message.isVisible}
+                />
+
+                <div className="flex items-center gap-2 my-3">
+                  <input
+                    type="checkbox"
+                    name="agreeToTerms"
+                    checked={formData.agreeToTerms}
+                    onChange={handleChange}
+                  />
+                  <p className="text-sm">
+                    I agree to the Terms and Conditions & Privacy Policy
+                  </p>
+                </div>
+
+                {/* <div className="mb-[50px] md:mb-2" /> */}
+                <Button label="Sign Up" />
+              </form>
+
+              <div className="mt-6 text-center">
+                <a
+                  href="/authentication/forget-password"
+                  className="text-yellow-500 hover:text-yellow-600 text-sm font-medium"
+                >
+                  Forgot Password?
+                </a>
+              </div>
+
+              <div className="mt-4 text-center">
+                <p className="text-sm text-gray-600">
+                  Already have an account?{" "}
+                  <a
+                    href="/authentication/signin"
+                    className="text-yellow-500 hover:text-yellow-600 font-medium"
+                  >
+                    Sign In
+                  </a>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </>
   );
