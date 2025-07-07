@@ -150,64 +150,67 @@ const VerificationForm = () => {
   };
 
   return (
-    <div className="p-10 bg-white rounded-lg max-w-lg mx-auto shadow-none md:shadow-md z-10">
+    <div className="p-5 md:p-10 bg-white w-full h-auto rounded-lg md:max-w-lg mx-auto shadow-none md:shadow-md z-10">
       {isSubmitting && <Loader />}
 
-      <h2 className="text-2xl md:text-3xl font-bold mb-2">
-        Email Verification
-      </h2>
+      <div>
+        <h2 className="text-2xl md:text-3xl font-bold mb-2">
+          Email Verification
+        </h2>
 
-      <p className="mb-6 text-base mx-1 text-gray-500">
-        Enter the 6-digit code sent to <strong>{email}</strong>
-      </p>
+        <p className="mb-6 text-base mx-1 text-gray-500">
+          Enter the 6-digit code sent to <strong>{email}</strong>
+        </p>
 
-      <form onSubmit={(e) => e.preventDefault()} className="space-y-5">
-        <div className="flex flex-col space-y-2 justify-between items-center w-full gap-3">
-          <InputOTP
-            maxLength={6}
-            value={code}
-            onChange={(val) => setCode(val)}
-            onComplete={handleVerification}
-          >
-            {[0, 1, 2, 3, 4, 5].map((index) => (
-              <InputOTPGroup key={index}>
-                <InputOTPSlot
-                  index={index}
-                  className="p-6 text-2xl border border-black"
-                />
-              </InputOTPGroup>
-            ))}
-          </InputOTP>
+        <form onSubmit={(e) => e.preventDefault()} className="space-y-5">
+          <div className="flex flex-col space-y-2 justify-between items-center w-full gap-3">
+            <InputOTP
+              maxLength={6}
+              value={code}
+              onChange={(val) => setCode(val)}
+              onComplete={handleVerification}
+            >
+              {[0, 1, 2, 3, 4, 5].map((index) => (
+                <InputOTPGroup key={index}>
+                  <InputOTPSlot
+                    index={index}
+                    className="p-6 text-2xl border border-black"
+                  />
+                </InputOTPGroup>
+              ))}
+            </InputOTP>
 
-          <button
-            type="button"
-            className="text-sm text-yellow-500 hover:text-yellow-600"
-            onClick={handleResendOtp}
-            disabled={isSubmitting}
-          >
-            Resend Code
-          </button>
-        </div>
+            <button
+              type="button"
+              className="text-sm text-yellow-500 hover:text-yellow-600"
+              onClick={handleResendOtp}
+              disabled={isSubmitting}
+            >
+              Resend Code
+            </button>
+          </div>
 
-        <MessageDisplay
-          message={message.text}
-          type={message.type}
-          isVisible={message.isVisible}
-        />
+          <MessageDisplay
+            message={message.text}
+            type={message.type}
+            isVisible={message.isVisible}
+          />
 
-        <Button
-          label="Verify"
-          disabled={code.length !== 6 || isSubmitting}
-          onClick={() => handleVerification(code)}
-        />
-      </form>
+          <Button
+            label="Verify"
+            disabled={code.length !== 6 || isSubmitting}
+            onClick={() => handleVerification(code)}
+          />
+        </form>
 
-      <p className="text-center text-sm mt-2">
-        Already have an account?{" "}
-        <a href="/authentication/signin" className="text-yellow-400">
-          Sign In
-        </a>
-      </p>
+        <p className="text-center text-sm mt-2">
+          Already have an account?{" "}
+          <a href="/authentication/signin" className="text-yellow-400">
+            Sign In
+          </a>
+        </p>
+      </div>
+
     </div>
   );
 };

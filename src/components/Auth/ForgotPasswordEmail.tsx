@@ -93,8 +93,8 @@ const ForgetPasswordEmail = () => {
   };
 
   return (
-    <div className="p-5 md:p-10 bg-white rounded-lg w-full md:max-w-xl mx-auto h-[100vh] flex justify-center items-center md:h-auto md:shadow-md z-10">
-      <div className="w-full">
+    <div className="md:p-10 rounded-lg w-full md:max-w-xl mx-auto flex justify-center items-center h-[100vh] md:h-auto md:shadow-md z-10">
+      <div className="w-full bg-white p-5 md:p-0 shadow-md md:shadow-none">
         {loading && <Loader />}
         <h2 className="text-3xl font-bold mb-2 mx-1">Forgot Password?</h2>
         <p className="mb-6 md:mb-3 mx-1">

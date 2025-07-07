@@ -557,7 +557,7 @@ interface PrivacyPolicyProps {
   onClose: () => void;
 }
 
-const TermsAndConditionsModal: React.FC<TermsModalProps> = ({
+export const TermsAndConditionsModal: React.FC<TermsModalProps> = ({
   isOpen,
   onClose,
 }) => {
@@ -744,7 +744,7 @@ const TermsAndConditionsModal: React.FC<TermsModalProps> = ({
   );
 };
 
-const PrivacyPolicyModal: React.FC<PrivacyPolicyProps> = ({
+export const PrivacyPolicyModal: React.FC<PrivacyPolicyProps> = ({
   isOpen,
   onClose,
 }) => {

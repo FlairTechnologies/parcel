@@ -18,6 +18,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Parcel",
   description: "Logistics and Deliveries",
+  icons: {
+    icon: "/favicon.png",
+  },
 };
 
 export default function RootLayout({

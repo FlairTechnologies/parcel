@@ -71,7 +71,7 @@ const ResetPasswordForm = () => {
 
       const data = await response.json();
       console.log(data)
-      
+
 
       if (response.ok) {
         setMessage({
@@ -104,44 +104,46 @@ const ResetPasswordForm = () => {
   };
 
   return (
-    <div className="p-6 bg-white rounded-md w-full md:max-w-md mx-auto h-full md:h-auto shadow-md z-10">
-      {loading && <Loader />}
-      <h2 className="text-3xl font-bold mb-1 mx-1">Create Password</h2>
-      <p className="mb-6 md:mb-3 mx-1">Input a new password</p>
+    <div className="md:p-6 rounded-md w-full md:max-w-md mx-auto h-[100vh] md:h-auto md:shadow-md z-10">
+      <div className="w-full bg-white p-5 md:p-0 shadow-md md:shadow-none">
+        {loading && <Loader />}
+        <h2 className="text-3xl font-bold mb-1 mx-1">Create Password</h2>
+        <p className="mb-6 md:mb-3 mx-1">Input a new password</p>
 
-      <form
-        className="flex flex-col gap-4 w-full my-4 mb-10"
-        onSubmit={handleSubmit}
-      >
-        <InputField
-          type="password"
-          placeholder="New Password"
-          value={password}
-          onChange={(e:any) => setPassword(e.target.value)}
-        />
-        <InputField
-          type="password"
-          placeholder="Confirm Password"
-          value={confirmPassword}
-          onChange={(e:any) => setConfirmPassword(e.target.value)}
-        />
+        <form
+          className="flex flex-col gap-4 w-full my-4 mb-10"
+          onSubmit={handleSubmit}
+        >
+          <InputField
+            type="password"
+            placeholder="New Password"
+            value={password}
+            onChange={(e: any) => setPassword(e.target.value)}
+          />
+          <InputField
+            type="password"
+            placeholder="Confirm Password"
+            value={confirmPassword}
+            onChange={(e: any) => setConfirmPassword(e.target.value)}
+          />
 
-        <MessageDisplay
-          message={message.text}
-          type={message.type}
-          isVisible={message.isVisible}
-        />
+          <MessageDisplay
+            message={message.text}
+            type={message.type}
+            isVisible={message.isVisible}
+          />
 
-        <div className="mt-5" />
-        <Button label="Reset Password" />
-      </form>
+          <div className="mt-5" />
+          <Button label="Reset Password" />
+        </form>
 
-      <p className="text-center text-sm mt-4">
-        Already have an account?{" "}
-        <a href="/authentication/signin" className="text-yellow-400">
-          Sign In
-        </a>
-      </p>
+        <p className="text-center text-sm mt-4">
+          Already have an account?{" "}
+          <a href="/authentication/signin" className="text-yellow-400">
+            Sign In
+          </a>
+        </p>
+      </div>
     </div>
   );
 };
