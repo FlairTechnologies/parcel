@@ -11,7 +11,7 @@ import backgroundImage from "../../../public/authentication/black-bg.png";
 import Image from "next/image";
 import { CheckCircle, XCircle } from "lucide-react";
 import backgroundImageMobile from "../../../public/authentication/white-bg.png"
-import { PrivacyPolicyModal } from "@/app/page";
+import { PrivacyPolicyModal } from "./TermsandPolicy";
 
 const SignUpForm = () => {
   const router = useRouter();
