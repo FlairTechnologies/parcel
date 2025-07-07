@@ -10,6 +10,8 @@ import { MessageDisplay } from "./SignInForm";
 import backgroundImage from "../../../public/authentication/black-bg.png";
 import Image from "next/image";
 import { CheckCircle, XCircle } from "lucide-react";
+import backgroundImageMobile from "../../../public/authentication/white-bg.png"
+import { PrivacyPolicyModal } from "@/app/page";
 
 const SignUpForm = () => {
   const router = useRouter();
@@ -23,6 +25,12 @@ const SignUpForm = () => {
     type: "error",
     isVisible: false,
   });
+
+  const [isPrivacyPolicyOpen, setIsPrivacyPolicyOpen] = useState(false);
+
+  const handleClosePrivacyPolicyModal = () => {
+    setIsPrivacyPolicyOpen(false);
+  };
 
   const [formData, setFormData] = useState({
     username: "",
@@ -152,7 +160,7 @@ const SignUpForm = () => {
                 alt="Sign In Background"
                 layout="fill"
                 objectFit="cover"
-                // className="opacity-50"
+              // className="opacity-50"
               />
             </div>
             <div className="z-10 text-center text-white">
@@ -165,8 +173,17 @@ const SignUpForm = () => {
           </div>
 
           {/* Right Panel */}
-          <div className="w-full h-full grid place-items-center md:w-1/2 p-8 md:p-12">
-            <div className="w-full md:w-3/4 mx-auto">
+          <div className="w-full h-full grid place-items-center md:w-1/2 md:p-12">
+            <div className="absolute inset-0 bg-black bg-opacity-10 w-full h-[100vh] md:hidden">
+              <Image
+                src={backgroundImageMobile}
+                alt="Sign In Background"
+                layout="fill"
+                objectFit="cover"
+                className="opacity-30"
+              />
+            </div>
+            <div className="w-full bg-white z-10 p-5 md:w-3/4 mx-auto shadow-md md:shadow-none">
               <h2 className="text-3xl font-bold text-gray-800 mb-4">Sign Up</h2>
 
               <form
@@ -235,8 +252,8 @@ const SignUpForm = () => {
                     checked={formData.agreeToTerms}
                     onChange={handleChange}
                   />
-                  <p className="text-sm">
-                    I agree to the Terms and Conditions & Privacy Policy
+                  <p className="text-sm ">
+                    I agree to the <span className="text-yellow-500 underline" onClick={() => setIsPrivacyPolicyOpen(true)}>Terms and Conditions & Privacy Policy</span>
                   </p>
                 </div>
 
@@ -268,6 +285,11 @@ const SignUpForm = () => {
           </div>
         </div>
       </div>
+
+      <PrivacyPolicyModal
+        isOpen={isPrivacyPolicyOpen}
+        onClose={handleClosePrivacyPolicyModal}
+      />
     </>
   );
 };

@@ -7,6 +7,8 @@ import { Loader } from "../ui/custom/loader";
 import { useAuth } from "@/context/AuthContext";
 import Image from "next/image";
 import backgroundImage from "../../../public/authentication/yellow-bg.png";
+import backgroundImageMobile from "../../../public/authentication/white-bg.png"
+
 
 // Error/Success Message Component
 export const MessageDisplay = ({
@@ -22,11 +24,10 @@ export const MessageDisplay = ({
 
   return (
     <div
-      className={`text-sm font-medium mb-4 transition-all duration-300 w-full p-3 rounded-md ${
-        type === "success"
+      className={`text-sm font-medium mb-4 transition-all duration-300 w-full p-3 rounded-md ${type === "success"
           ? "text-green-600 border border-green-200 bg-green-50"
           : "text-red-500 border border-red-200 bg-red-50"
-      }`}
+        }`}
     >
       {message}
     </div>
@@ -142,8 +143,17 @@ const SignInForm = () => {
           </div>
 
           {/* Right Panel - Sign In Form */}
-          <div className="w-full h-full grid place-items-center md:w-1/2 p-8 md:p-12">
-            <div className="w-full md:w-3/4 mx-auto">
+          <div className="w-full h-full grid place-items-center md:w-1/2 md:p-12">
+            <div className="absolute inset-0 bg-black bg-opacity-10 w-full h-[100vh] md:hidden">
+              <Image
+                src={backgroundImageMobile}
+                alt="Sign In Background"
+                layout="fill"
+                objectFit="cover"
+                className="opacity-30"
+              />
+            </div>
+            <div className="w-full bg-white z-10 p-5 md:w-3/4 mx-auto shadow-md md:shadow-none">
               <h2 className="text-3xl font-bold text-gray-800 mb-4">Sign In</h2>
 
               <form onSubmit={handleSubmit} className="space-y-6">

@@ -5,7 +5,7 @@ import React from "react";
 
 const index = () => {
   return (
-    <div className="relative h-full md:min-h-screen grid place-items-center">
+    <div className="relative h-screen md:min-h-screen grid place-items-center">
       <div className="absolute inset-0 bg-black bg-opacity-10 w-full h-full">
         <Image
           src={backgroundImage}
