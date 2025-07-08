@@ -33,13 +33,13 @@ interface NavItem {
 const navigationItems: NavItem[] = [
   { name: 'Home', href: '/user/home', icon: Home },
   { name: 'Orders', href: '/user/order', icon: ShoppingBag, },
-  {
-    name: 'Stores',
-    icon: Store,
-    customClick: () => {
-      // Custom store navigation logic
-    }
-  },
+  // {
+  //   name: 'Stores',
+  //   icon: Store,
+  //   customClick: () => {
+  //     // Custom store navigation logic
+  //   }
+  // },
   { name: 'Profile', href: '/user/profile', icon: User },
 ]
 
