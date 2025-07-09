@@ -53,7 +53,7 @@ const SignUpForm = () => {
     uppercase: /[A-Z]/,
     lowercase: /[a-z]/,
     numeric: /\d/,
-    specialChar: /[!@#$%^&*(),.?":{}|<>]/,
+    specialChar: /[@$!%?&]/,
   };
 
   const validatePassword = (password: string) => {
