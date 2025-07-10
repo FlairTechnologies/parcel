@@ -122,7 +122,7 @@ const SignUpForm = () => {
         router.replace("/authentication/verify");
       } else {
         setMessage({
-          text: data.error || "Registration failed.",
+          text: data.error || data.message,
           type: "error",
           isVisible: true,
         });
