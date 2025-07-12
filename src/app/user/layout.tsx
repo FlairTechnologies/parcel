@@ -58,7 +58,7 @@ export default function Layout({ children }: LayoutProps) {
 
   // Check if user needs to update phone number on component mount
   useEffect(() => {
-    console.log(user?.phone)
+    // console.log(user?.phone)
     // You can add your logic here to check if the user needs to update their phone
     // For example, check localStorage, user context, or make an API call
     // For now, we'll show the modal immediately for demonstration
