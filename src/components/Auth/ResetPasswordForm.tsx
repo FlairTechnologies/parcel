@@ -104,7 +104,7 @@ const ResetPasswordForm = () => {
   };
 
   return (
-    <div className="md:p-6 rounded-md w-full md:max-w-md mx-auto h-[100vh] md:h-auto md:shadow-md z-10">
+    <div className="md:p-6 rounded-md w-full md:max-w-md mx-auto h-[100vh] md:h-auto md:shadow-md z-10 bg-white">
       <div className="w-full bg-white p-5 md:p-0 shadow-md md:shadow-none">
         {loading && <Loader />}
         <h2 className="text-3xl font-bold mb-1 mx-1">Create Password</h2>

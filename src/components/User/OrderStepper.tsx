@@ -393,23 +393,6 @@ const Stepper = () => {
   return (
     <div className="min-h-screen w-full bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center p-4">
       {/* Header */}
-      <div className="w-full p-4 bg-white/80 backdrop-blur-sm fixed top-0 left-0 z-10 border-b border-gray-200">
-        <div className="max-w-2xl mx-auto flex items-center justify-between">
-          <button
-            onClick={() => router.back()}
-            className="flex items-center gap-2 text-gray-600 hover:text-gray-800 transition-colors"
-          >
-            <ArrowLeft className="w-5 h-5" />
-            <span className="hidden sm:inline">Back</span>
-          </button>
-          <div className="flex items-center gap-2">
-            {getCurrentStepIcon()}
-            <span className="font-medium text-gray-800">
-              Step {currentStep} of {steps.length}
-            </span>
-          </div>
-        </div>
-      </div>
 
       <div className="w-full max-w-4xl mt-20 mb-8">
         <div className="bg-white rounded-3xl shadow-xl overflow-hidden">
@@ -490,7 +473,7 @@ const Stepper = () => {
           </div>
 
           {/* Content Section */}
-          <div className="p-8">
+          <div className="p-2">
             <div className="min-h-[400px]">
               {/* Step 1: Package Details */}
               {currentStep === 1 && (
@@ -560,7 +543,7 @@ const Stepper = () => {
                     <InputField
                       type="email"
                       name="receiverEmail"
-                      placeholder="Receiver's Email (Optional)"
+                      placeholder="Receiver's Email"
                       value={formData.receiverEmail}
                       onChange={handleChange}
                     />
@@ -645,6 +628,7 @@ const Stepper = () => {
                           )}
                         </SelectContent>
                       </Select>
+
                       {errors.fromLocation && (
                         <p className="text-red-500 text-sm mt-1">
                           {errors.fromLocation}

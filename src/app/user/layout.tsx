@@ -13,9 +13,13 @@ import {
   Bell,
   Search,
   Menu,
-  X
+  X,
+  Phone,
+  AlertCircle
 } from 'lucide-react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import axios from 'axios'
+import { useAuth } from '@/context/AuthContext'
 
 interface LayoutProps {
   children: React.ReactNode
@@ -46,6 +50,63 @@ const navigationItems: NavItem[] = [
 export default function Layout({ children }: LayoutProps) {
   const pathname = usePathname()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [isPhoneModalOpen, setIsPhoneModalOpen] = useState(false)
+  const [phoneNumber, setPhoneNumber] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [error, setError] = useState('')
+  const { accessToken, user } = useAuth();
+
+  // Check if user needs to update phone number on component mount
+  useEffect(() => {
+    console.log(user?.phone)
+    // You can add your logic here to check if the user needs to update their phone
+    // For example, check localStorage, user context, or make an API call
+    // For now, we'll show the modal immediately for demonstration
+    const hasPhoneNumber = user?.phone
+    if (!hasPhoneNumber) {
+      setIsPhoneModalOpen(true)
+    }
+  }, [])
+
+  const handlePhoneSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+
+    if (!phoneNumber.trim()) {
+      setError('Please enter your phone number')
+      return
+    }
+
+    // Basic phone number validation
+    const phoneRegex = /^[0-9]{10,15}$/
+    if (!phoneRegex.test(phoneNumber.replace(/\D/g, ''))) {
+      setError('Please enter a valid phone number')
+      return
+    }
+
+    setIsSubmitting(true)
+    setError('')
+
+    try {
+      const response = await axios.post('/api/users/update_phone', { phone: phoneNumber }, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`,
+        },
+      })
+
+      if (response.status === 200) {
+        // Store flag to prevent modal from showing again
+        localStorage.setItem('userHasPhone', 'true')
+        setIsPhoneModalOpen(false)
+        setPhoneNumber('')
+      }
+    } catch (err: any) {
+      setError('Failed to update phone number. Please try again.')
+      console.error('Error updating phone:', err)
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
 
   const renderNavItem = (item: NavItem, isMobile = false) => {
     const isActive = pathname === item.href
@@ -115,7 +176,78 @@ export default function Layout({ children }: LayoutProps) {
   }
 
   return (
-    <div className="h-screen flex bg-gradient-to-br from-gray-50 to-gray-100">
+    <div className="h-screen flex bg-gradient-to-br from-gray-50 to-gray-100 z-10">
+      {/* Phone Number Modal */}
+      {isPhoneModalOpen && (
+        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full mx-4 overflow-hidden">
+            <div className="bg-gradient-to-r from-[#F9CA44] to-[#f7b731] p-6">
+              <div className="flex items-center">
+                <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mr-4">
+                  <Phone className="h-6 w-6 text-white" />
+                </div>
+                <div>
+                  <h2 className="text-xl font-bold text-white">Update Phone Number</h2>
+                  <p className="text-white/90 text-sm">Required to continue</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-6">
+              <div className="mb-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                <div className="flex items-start">
+                  <AlertCircle className="h-5 w-5 text-blue-600 mr-2 mt-0.5 flex-shrink-0" />
+                  <div>
+                    <p className="text-sm font-medium text-blue-900">Important Notice</p>
+                    <p className="text-xs text-blue-700 mt-1">
+                      Please enter a phone number that you can be reached on. This will be used for order updates and delivery notifications.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <form onSubmit={handlePhoneSubmit} className="space-y-4">
+                <div>
+                  <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
+                    Phone Number *
+                  </label>
+                  <input
+                    type="tel"
+                    id="phone"
+                    value={phoneNumber}
+                    onChange={(e) => setPhoneNumber(e.target.value)}
+                    placeholder="Enter your phone number"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F9CA44] focus:border-transparent outline-none transition-all duration-200"
+                    disabled={isSubmitting}
+                  />
+                </div>
+
+                {error && (
+                  <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
+                    <p className="text-sm text-red-700">{error}</p>
+                  </div>
+                )}
+
+                <button
+                  type="submit"
+                  disabled={isSubmitting || !phoneNumber.trim()}
+                  className="w-full bg-gradient-to-r from-[#F9CA44] to-[#f7b731] text-white py-3 px-4 rounded-lg font-medium hover:from-[#f7b731] hover:to-[#F9CA44] focus:outline-none focus:ring-2 focus:ring-[#F9CA44] focus:ring-offset-2 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isSubmitting ? (
+                    <div className="flex items-center justify-center">
+                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                      Updating...
+                    </div>
+                  ) : (
+                    'Update Phone Number'
+                  )}
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Desktop Sidebar */}
       <div className="hidden lg:flex lg:w-72 lg:flex-col">
         <div className="flex flex-col flex-grow pt-8 pb-6 overflow-y-auto bg-white/80 backdrop-blur-xl shadow-2xl border-r border-gray-200/50">

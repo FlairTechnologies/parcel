@@ -34,6 +34,7 @@ const SignUpForm = () => {
 
   const [formData, setFormData] = useState({
     username: "",
+    phone: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -53,7 +54,7 @@ const SignUpForm = () => {
     uppercase: /[A-Z]/,
     lowercase: /[a-z]/,
     numeric: /\d/,
-    specialChar: /[@$!%?&]/,
+    specialChar: /[!@#$%^&*(),.?":{}|<>]/,
   };
 
   const validatePassword = (password: string) => {
@@ -106,12 +107,12 @@ const SignUpForm = () => {
     setMessage({ ...message, isVisible: false });
 
     try {
-      const { email, password, username } = formData;
+      const { email, phone, password, username } = formData;
 
       const response = await fetch(`/api/users/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password, username }),
+        body: JSON.stringify({ email, phone, password, username }),
       });
 
       const data = await response.json();
@@ -195,6 +196,13 @@ const SignUpForm = () => {
                   placeholder="Username"
                   name="username"
                   value={formData.username}
+                  onChange={handleChange}
+                />
+                <InputField
+                  type="text"
+                  placeholder="Phone Number"
+                  name="phone"
+                  value={formData.phone}
                   onChange={handleChange}
                 />
                 <InputField
