@@ -118,7 +118,6 @@ const ReceiptModal = ({
       });
       return;
     }
-
     setLoading(true);
     try {
       const response = await fetch(`/api/orders/checkout`, {
@@ -185,11 +184,10 @@ const ReceiptModal = ({
                   <div className="flex justify-between mb-4">
                     <span className="text-gray-600">Status:</span>
                     <span
-                      className={`capitalize px-2 py-1 rounded-full text-sm font-medium ${
-                        order.status === "delivered"
+                      className={`capitalize px-2 py-1 rounded-full text-sm font-medium ${order.status === "delivered"
                           ? "bg-green-100 text-green-700"
                           : "bg-yellow-100 text-yellow-700"
-                      }`}
+                        }`}
                     >
                       {order.status}
                     </span>
@@ -197,11 +195,10 @@ const ReceiptModal = ({
                   <div className="flex justify-between mb-4">
                     <span className="text-gray-600">Payment Status:</span>
                     <span
-                      className={`capitalize font-medium ${
-                        order.paymentStatus === "paid"
+                      className={`capitalize font-medium ${order.paymentStatus === "paid"
                           ? "text-green-600"
                           : "text-red-600"
-                      }`}
+                        }`}
                     >
                       {order.paymentStatus}
                     </span>
@@ -233,9 +230,8 @@ const ReceiptModal = ({
                   <div className="flex justify-between">
                     <span className="text-gray-600">Name:</span>
                     <span className="font-medium capitalize">
-                      {`${order.rider?.firstname || ""} ${
-                        order.rider?.lastname || "N/A"
-                      }`}
+                      {`${order.rider?.firstname || ""} ${order.rider?.lastname || "N/A"
+                        }`}
                     </span>
                   </div>
                 </div>
@@ -255,7 +251,10 @@ const ReceiptModal = ({
         <AlertDialogFooter className="flex items-center justify-between w-full">
           {/* Checkout Button (visible only if paymentStatus is unpaid) */}
           {order?.paymentStatus !== "paid" && (
-            <button className="bg-green-500 hover:bg-green-400 text-white px-4 py-2 rounded-lg transition-colors">
+            <button className="bg-green-500 hover:bg-green-400 text-white px-4 py-2 rounded-lg transition-colors" onClick={() => {
+              handleCheckout()
+              onClose()
+            }}>
               Checkout Order
             </button>
           )}
@@ -285,9 +284,8 @@ const DashboardHeader = ({ user }: { user: IUser | null }) => (
       <div className="relative overflow-hidden rounded-full transition-transform group-hover:scale-105">
         <Avatar className="h-[70px] w-[70px] bg-purple-100">
           <AvatarImage
-            src={`https://api.dicebear.com/7.x/notionists/svg?seed=${
-              user?.username || "Username"
-            }`}
+            src={`https://api.dicebear.com/7.x/notionists/svg?seed=${user?.username || "Username"
+              }`}
           />
           <AvatarFallback>
             {user ? user.username.slice(0, 2).toUpperCase() : "UN"}
@@ -435,11 +433,10 @@ const OrderItem = ({
         </div>
       </div>
       <span
-        className={`capitalize font-medium px-3 py-1 rounded-full text-sm ${
-          order.status === "delivered"
+        className={`capitalize font-medium px-3 py-1 rounded-full text-sm ${order.status === "delivered"
             ? "bg-green-50 text-green-600"
             : "bg-yellow-50 text-yellow-600"
-        }`}
+          }`}
       >
         {order.status}
       </span>
