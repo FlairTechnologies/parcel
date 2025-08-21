@@ -209,6 +209,7 @@ const SignUpForm = () => {
           )}
           <div className="flex items-center gap-2 my-3">
             <input
+            title="i agree"
               type="checkbox"
               name="agreeToTerms"
               checked={formData.agreeToTerms}
