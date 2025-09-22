@@ -255,6 +255,7 @@ const SignUpForm = () => {
 
                 <div className="flex items-center gap-2 my-3">
                   <input
+                    title="sign up"
                     type="checkbox"
                     name="agreeToTerms"
                     checked={formData.agreeToTerms}
@@ -265,20 +266,10 @@ const SignUpForm = () => {
                   </p>
                 </div>
 
-                {/* <div className="mb-[50px] md:mb-2" /> */}
                 <Button label="Sign Up" />
               </form>
 
               <div className="mt-6 text-center">
-                <a
-                  href="/authentication/forget-password"
-                  className="text-yellow-500 hover:text-yellow-600 text-sm font-medium"
-                >
-                  Forgot Password?
-                </a>
-              </div>
-
-              <div className="mt-4 text-center">
                 <p className="text-sm text-gray-600">
                   Already have an account?{" "}
                   <a
@@ -289,6 +280,16 @@ const SignUpForm = () => {
                   </a>
                 </p>
               </div>
+
+
+
+              <div className="mt-16 text-center">
+                <div className="text-center mt-8 mb-4">
+                  <span className="text-sm text-gray-400">OR</span>
+                </div>
+                <Button label="Sign up as a rider" variant="secondary" onClick={() => router.push('/authentication/signup/rider')} />
+              </div>
+
             </div>
           </div>
         </div>
