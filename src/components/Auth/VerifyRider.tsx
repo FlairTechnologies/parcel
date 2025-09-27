@@ -63,7 +63,7 @@ export default function VerificationForm() {
         router.replace("/authentication/signup/rider/verify-bike");
         // localStorage.removeItem("access_token");
       } else {
-        console.error("Error submitting the form:", response.statusText);
+        console.error("Error submitting the form:", response.status);
       }
     } catch (error) {
       console.error("Error submitting the form:", error);
@@ -97,6 +97,7 @@ export default function VerificationForm() {
               Upload Supporting Document
             </label>
             <input
+            title="title"
               type="file"
               name="upload"
               accept="image/*"
