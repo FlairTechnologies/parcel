@@ -527,10 +527,8 @@ const WalletDashboard = () => {
 
   const handleCompleteOrder = async (orderId: string, pin: string) => {
     try {
-      // Mock implementation - replace with your actual API endpoint
       console.log('Completing order:', orderId, 'with PIN:', pin);
       
-      // Simple PIN validation (replace with server-side validation)
       if (pin.length === 4) {
         setOrders(prevOrders => 
           prevOrders?.map(order => 
@@ -558,8 +556,6 @@ const WalletDashboard = () => {
       console.error('Error completing order:', error);
     }
   };
-
-  // Use your existing API endpoint structure
   useEffect(() => {
     const fetchDashboardData = async () => {
       if (!accessToken) {
@@ -568,7 +564,6 @@ const WalletDashboard = () => {
       }
 
       try {
-        // Use your existing wallet API endpoint
         const response = await fetch(`/api/wallets?page=1&limit=10`, {
           headers: {
             Authorization: `Bearer ${accessToken}`,
