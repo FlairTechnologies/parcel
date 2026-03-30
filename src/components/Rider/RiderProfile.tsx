@@ -71,7 +71,7 @@ const RiderProfile = () => {
           <div onClick={() => router.back()}>
             <ArrowLeft className="h-9 w-9" />
           </div>
-          <h1 className="text-xl font-[500]">Rider Profile</h1>
+          <h1 className="text-xl font-[500]">Profile</h1>
           <div></div>
         </div>
       </div>

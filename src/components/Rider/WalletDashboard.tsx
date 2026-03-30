@@ -1,11 +1,11 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-import { 
-  Wallet, 
-  ArrowDownCircle, 
-  Plus, 
-  Receipt, 
-  Package, 
+import {
+  Wallet,
+  ArrowDownCircle,
+  Plus,
+  Receipt,
+  Package,
   Bell,
   CheckCircle,
   Clock,
@@ -109,17 +109,17 @@ const DashboardHeader = ({ user }: { user: IUser | null }) => {
           </div>
           <div>
             <h1 className="text-2xl font-medium hidden lg:block group-hover:text-gray-700">
-              {user?.username}
+              {user?.firstname}
             </h1>
-            <p className="text-sm text-gray-500 hidden lg:block">Rider Dashboard</p>
+            <p className="text-sm text-gray-500 hidden lg:block">Rider's Dashboard</p>
           </div>
         </Link>
 
         <div className="flex items-center space-x-4">
           <Link href="/rider/notification" className="relative">
-            <Bell 
-              className="w-6 h-6 text-black hover:text-gray-600 transition-colors" 
-              onClick={() => setLoading(true)} 
+            <Bell
+              className="w-6 h-6 text-black hover:text-gray-600 transition-colors"
+              onClick={() => setLoading(true)}
             />
             {notificationCount > 0 && (
               <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
@@ -134,13 +134,13 @@ const DashboardHeader = ({ user }: { user: IUser | null }) => {
 };
 
 // Enhanced Wallet Card Component
-const WalletCard = ({ 
-  balance, 
-  completedOrders, 
-  pendingOrders, 
+const WalletCard = ({
+  balance,
+  completedOrders,
+  pendingOrders,
   totalEarnings,
-  totalPenalties 
-}: { 
+  totalPenalties
+}: {
   balance: number;
   completedOrders: number;
   pendingOrders: number;
@@ -169,15 +169,15 @@ const WalletCard = ({
             <div className="p-3 bg-[#F9CA44] bg-opacity-20 rounded-full">
               <Wallet className="w-8 h-8 text-[#F9CA44]" />
             </div>
-            <span className="text-lg font-medium text-gray-600">Available Balance</span>
+            <span className="text-lg font-medium text-gray-600">Total Earnings</span>
           </div>
 
-          <div className="text-4xl font-bold mb-6">NGN {new Intl.NumberFormat().format(balance)}</div>
+          <div className="text-4xl font-bold mb-6">NGN {new Intl.NumberFormat().format(totalEarnings)}</div>
 
           <div className="grid grid-cols-2 gap-4 mb-6">
             <div className="bg-green-50 p-3 rounded-lg">
-              <p className="text-sm text-green-600">Total Earnings</p>
-              <p className="text-lg font-bold text-green-700">NGN {new Intl.NumberFormat().format(totalEarnings)}</p>
+              <p className="text-sm text-green-600">Available Balance</p>
+              <p className="text-lg font-bold text-green-700">NGN {new Intl.NumberFormat().format(balance)}</p>
             </div>
             <div className="bg-red-50 p-3 rounded-lg">
               <p className="text-sm text-red-600">Total Penalties</p>
@@ -226,16 +226,7 @@ const WalletCard = ({
       </div>
 
       {/* Order Statistics */}
-      <div className="grid grid-cols-2 gap-4">
-        <div className="bg-white rounded-lg shadow-md p-4">
-          <div className="flex items-center space-x-3">
-            <CheckCircle className="w-8 h-8 text-green-500" />
-            <div>
-              <p className="text-sm text-gray-600">Completed Orders</p>
-              <p className="text-2xl font-bold text-green-600">{completedOrders}</p>
-            </div>
-          </div>
-        </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="bg-white rounded-lg shadow-md p-4">
           <div className="flex items-center space-x-3">
             <Clock className="w-8 h-8 text-yellow-500" />
@@ -245,6 +236,16 @@ const WalletCard = ({
             </div>
           </div>
         </div>
+        <div className="bg-white rounded-lg shadow-md p-4">
+          <div className="flex items-center space-x-3">
+            <CheckCircle className="w-8 h-8 text-green-500" />
+            <div>
+              <p className="text-sm text-gray-600">Completed Orders</p>
+              <p className="text-2xl font-bold text-green-600">{completedOrders}</p>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   );
@@ -291,13 +292,12 @@ const VerificationStatus = ({ verification }: { verification: IRiderVerification
       <div className="mt-4 pt-4 border-t">
         <div className="flex items-center justify-between">
           <span className="font-medium">Overall Status</span>
-          <span className={`px-3 py-1 rounded-full text-sm font-medium ${
-            verification.overallVerificationStatus === 'complete' 
-              ? 'bg-green-100 text-green-700'
-              : verification.overallVerificationStatus === 'partial'
+          <span className={`px-3 py-1 rounded-full text-sm font-medium ${verification.overallVerificationStatus === 'complete'
+            ? 'bg-green-100 text-green-700'
+            : verification.overallVerificationStatus === 'partial'
               ? 'bg-yellow-100 text-yellow-700'
               : 'bg-red-100 text-red-700'
-          }`}>
+            }`}>
             {verification.overallVerificationStatus.toUpperCase()}
           </span>
         </div>
@@ -330,10 +330,9 @@ const TargetProgress = ({ target }: { target: ITarget }) => {
         </div>
 
         <div className="w-full bg-gray-200 rounded-full h-3">
-          <div 
-            className={`h-3 rounded-full transition-all duration-300 ${
-              target.isAchieved ? 'bg-green-500' : 'bg-[#F9CA44]'
-            }`}
+          <div
+            className={`h-3 rounded-full transition-all duration-300 ${target.isAchieved ? 'bg-green-500' : 'bg-[#F9CA44]'
+              }`}
             style={{ width: `${Math.min(progress, 100)}%` }}
           />
         </div>
@@ -353,11 +352,11 @@ const TargetProgress = ({ target }: { target: ITarget }) => {
 };
 
 // Enhanced Order Item Component with Accept/Complete Actions
-const OrderItem = ({ 
-  order, 
-  onAccept, 
-  onComplete, 
-  showActions = true 
+const OrderItem = ({
+  order,
+  onAccept,
+  onComplete,
+  showActions = true
 }: {
   order: IOrder;
   onAccept?: (orderId: string) => void;
@@ -397,9 +396,8 @@ const OrderItem = ({
   };
 
   return (
-    <div className={`group bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-300 p-4 lg:p-6 mt-2 ${
-      isOverdue() ? 'border-l-4 border-red-500' : ''
-    }`}>
+    <div className={`group bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-300 p-4 lg:p-6 mt-2 ${isOverdue() ? 'border-l-4 border-red-500' : ''
+      }`}>
       <div className="flex justify-between items-start">
         <div className="flex items-center space-x-3">
           <div className="p-2 bg-gray-50 rounded-lg group-hover:bg-gray-100 transition-colors">
@@ -502,16 +500,16 @@ const WalletDashboard = () => {
     try {
       // Mock implementation - replace with your actual API endpoint
       console.log('Accepting order:', orderId);
-      
+
       // For now, just update the UI optimistically
-      setOrders(prevOrders => 
-        prevOrders?.map(order => 
-          order._id === orderId 
+      setOrders(prevOrders =>
+        prevOrders?.map(order =>
+          order._id === orderId
             ? { ...order, status: 'accepted' as const, acceptedAt: new Date() }
             : order
         ) || []
       );
-      
+
       // TODO: Replace with actual API call
       // const response = await fetch(`/api/orders/${orderId}/accept`, {
       //   method: 'POST',
@@ -528,21 +526,21 @@ const WalletDashboard = () => {
   const handleCompleteOrder = async (orderId: string, pin: string) => {
     try {
       console.log('Completing order:', orderId, 'with PIN:', pin);
-      
+
       if (pin.length === 4) {
-        setOrders(prevOrders => 
-          prevOrders?.map(order => 
-            order._id === orderId 
+        setOrders(prevOrders =>
+          prevOrders?.map(order =>
+            order._id === orderId
               ? { ...order, status: 'delivered' as const, deliveredAt: new Date() }
               : order
           ) || []
         );
-        
+
         // Update completed orders count
         setCompletedOrders(prev => prev + 1);
         setPendingOrders(prev => Math.max(0, prev - 1));
       }
-      
+
       // TODO: Replace with actual API call
       // const response = await fetch(`/api/orders/${orderId}/complete`, {
       //   method: 'POST',
@@ -581,7 +579,7 @@ const WalletDashboard = () => {
           setOrders(data.orders?.docs || []);
           setCompletedOrders(data.completedOrders || 0);
           setPendingOrders(data.notDeliveredOrders || 0);
-          
+
           // Set mock data for new features (you can replace with real API calls later)
           setVerification({
             nin: { verified: false },
@@ -589,7 +587,7 @@ const WalletDashboard = () => {
             driversLicense: { verified: false },
             overallVerificationStatus: 'pending'
           });
-          
+
           setTarget({
             type: 'daily',
             targetOrders: 10,
@@ -597,7 +595,7 @@ const WalletDashboard = () => {
             period: new Date().toISOString().split('T')[0],
             isAchieved: (data.completedOrders || 0) >= 10
           });
-          
+
           setIsLoading(false);
         } else {
           console.error("Failed to fetch dashboard data:", data.message);
@@ -622,9 +620,9 @@ const WalletDashboard = () => {
         <DashboardHeader user={user} />
 
         <div className="lg:grid lg:grid-cols-3 lg:gap-8 lg:mt-14">
-          <WalletCard 
-            balance={wallet?.balance || 0} 
-            completedOrders={completedOrders} 
+          <WalletCard
+            balance={wallet?.balance || 0}
+            completedOrders={completedOrders}
             pendingOrders={pendingOrders}
             totalEarnings={wallet?.totalEarnings || 0}
             totalPenalties={wallet?.totalPenalties || 0}
@@ -632,30 +630,30 @@ const WalletDashboard = () => {
 
           <div className="mt-6 lg:mt-0">
             <div className="space-y-6">
-              {verification && <VerificationStatus verification={verification} />}
+              {/* {verification && <VerificationStatus verification={verification} />} */}
               {target && <TargetProgress target={target} />}
+
+              <div className="mt-8">
+                <div className="flex justify-between items-center">
+                  <h2 className="text-xl font-bold">Recent Orders</h2>
+                  <Link href="/rider/orders" className="text-gray-500 hover:text-gray-700 hover:underline transition-colors">
+                    View All Orders
+                  </Link>
+                </div>
+
+                <div className="space-y-3 mt-4">
+                  {orders?.map((order: IOrder) => (
+                    <OrderItem
+                      key={order._id}
+                      order={order}
+                      onAccept={handleAcceptOrder}
+                      onComplete={handleCompleteOrder}
+                      showActions={order.status === 'pending' || order.status === 'accepted'}
+                    />
+                  ))}
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-
-        <div className="mt-8">
-          <div className="flex justify-between items-center">
-            <h2 className="text-xl font-bold">Recent Orders</h2>
-            <Link href="/rider/orders" className="text-gray-500 hover:text-gray-700 hover:underline transition-colors">
-              View All Orders
-            </Link>
-          </div>
-
-          <div className="space-y-3 mt-4">
-            {orders?.map((order: IOrder) => (
-              <OrderItem 
-                key={order._id} 
-                order={order} 
-                onAccept={handleAcceptOrder}
-                onComplete={handleCompleteOrder}
-                showActions={order.status === 'pending' || order.status === 'accepted'}
-              />
-            ))}
           </div>
         </div>
       </div>
@@ -664,997 +662,3 @@ const WalletDashboard = () => {
 };
 
 export default WalletDashboard;
-
-// "use client";
-// import React, { useEffect, useRef, useState } from "react";
-// import { 
-//   Wallet, 
-//   ArrowDownCircle, 
-//   Plus, 
-//   Receipt, 
-//   Package, 
-//   Bell,
-//   CheckCircle,
-//   Clock,
-//   AlertTriangle,
-//   Target,
-//   Shield,
-//   User,
-//   FileText,
-//   CreditCard,
-//   MapPin,
-//   Phone
-// } from "lucide-react";
-// import Link from "next/link";
-// import { IUser, useAuth } from "@/context/AuthContext";
-// import {
-//   AlertDialog,
-//   AlertDialogAction,
-//   AlertDialogCancel,
-//   AlertDialogContent,
-//   AlertDialogDescription,
-//   AlertDialogFooter,
-//   AlertDialogHeader,
-//   AlertDialogTitle,
-//   AlertDialogTrigger,
-// } from "@/components/ui/alert-dialog";
-// import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-// import { getDate } from "@/lib/utils";
-// import { Loader } from "../ui/custom/loader";
-
-// // Enhanced Interfaces
-// interface IOrder {
-//   _id: string;
-//   orderId: string;
-//   status: 'pending' | 'accepted' | 'in_transit' | 'delivered' | 'cancelled';
-//   paymentStatus: 'paid' | 'unpaid';
-//   receiverName: string;
-//   receiversAddress: string;
-//   cost: string;
-//   acceptedAt?: Date;
-//   deliveredAt?: Date;
-//   createdAt: Date;
-//   updatedAt: Date;
-//   estimatedDeliveryTime: number; // in hours
-//   penaltyApplied?: boolean;
-//   penaltyAmount?: number;
-// }
-
-// interface IWallet {
-//   balance: number;
-//   totalEarnings: number;
-//   totalPenalties: number;
-// }
-
-// interface IRiderVerification {
-//   nin: {
-//     number?: string;
-//     verified: boolean;
-//     uploadedAt?: Date;
-//   };
-//   bvn: {
-//     number?: string;
-//     verified: boolean;
-//     uploadedAt?: Date;
-//   };
-//   driversLicense: {
-//     number?: string;
-//     verified: boolean;
-//     uploadedAt?: Date;
-//     expiryDate?: Date;
-//   };
-//   overallVerificationStatus: 'pending' | 'partial' | 'complete';
-// }
-
-// interface ITarget {
-//   type: 'daily' | 'weekly';
-//   targetOrders: number;
-//   completedOrders: number;
-//   period: string; // e.g., "2025-09-27" for daily, "2025-W39" for weekly
-//   isAchieved: boolean;
-// }
-
-// // Header Component
-// const DashboardHeader = ({ user }: { user: IUser | null }) => {
-//   const [isLoading, setLoading] = useState(false);
-//   const [notificationCount, setNotificationCount] = useState(3);
-
-//   return (
-//     <>
-//       {isLoading && <Loader />}
-//       <div className="flex justify-between items-center mt-4">
-//         <Link href="profile" className="group flex items-center space-x-4">
-//           <div className="relative overflow-hidden rounded-full transition-transform group-hover:scale-105">
-//             <Avatar className="h-[70px] w-[70px] bg-purple-100">
-//               <AvatarImage
-//                 src={`https://api.dicebear.com/7.x/notionists/svg?seed=${user?.firstname || "Username"}`}
-//               />
-//               <AvatarFallback>
-//                 {user ? user.firstname?.slice(0, 2).toUpperCase() : "UN"}
-//               </AvatarFallback>
-//             </Avatar>
-//           </div>
-//           <div>
-//             <h1 className="text-2xl font-medium hidden lg:block group-hover:text-gray-700">
-//               {user?.username}
-//             </h1>
-//             <p className="text-sm text-gray-500 hidden lg:block">Rider Dashboard</p>
-//           </div>
-//         </Link>
-
-//         <div className="flex items-center space-x-4">
-//           <Link href="/rider/notification" className="relative">
-//             <Bell 
-//               className="w-6 h-6 text-black hover:text-gray-600 transition-colors" 
-//               onClick={() => setLoading(true)} 
-//             />
-//             {notificationCount > 0 && (
-//               <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-//                 {notificationCount}
-//               </span>
-//             )}
-//           </Link>
-//         </div>
-//       </div>
-//     </>
-//   );
-// };
-
-// // Enhanced Wallet Card Component
-// const WalletCard = ({ 
-//   balance, 
-//   completedOrders, 
-//   pendingOrders, 
-//   totalEarnings,
-//   totalPenalties 
-// }: { 
-//   balance: number;
-//   completedOrders: number;
-//   pendingOrders: number;
-//   totalEarnings: number;
-//   totalPenalties: number;
-// }) => {
-//   const [isOpen, setIsOpen] = useState(false);
-//   const [withdrawAmount, setWithdrawAmount] = useState('');
-
-//   const handleWithdraw = () => {
-//     // Add withdrawal logic here
-//     setIsOpen(false);
-//     setWithdrawAmount("");
-//   };
-
-//   return (
-//     <div className="lg:col-span-2 space-y-4">
-//       {/* Main Wallet Card */}
-//       <div className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 p-6 relative overflow-hidden">
-//         <div className="absolute top-0 right-0 w-64 h-64 transform translate-x-32 -translate-y-32">
-//           <div className="absolute inset-0 bg-[#F9CA44] opacity-10 transform rotate-45 scale-150" />
-//         </div>
-
-//         <div className="relative z-10">
-//           <div className="flex items-center space-x-3 mb-6">
-//             <div className="p-3 bg-[#F9CA44] bg-opacity-20 rounded-full">
-//               <Wallet className="w-8 h-8 text-[#F9CA44]" />
-//             </div>
-//             <span className="text-lg font-medium text-gray-600">Available Balance</span>
-//           </div>
-
-//           <div className="text-4xl font-bold mb-6">NGN {new Intl.NumberFormat().format(balance)}</div>
-
-//           <div className="grid grid-cols-2 gap-4 mb-6">
-//             <div className="bg-green-50 p-3 rounded-lg">
-//               <p className="text-sm text-green-600">Total Earnings</p>
-//               <p className="text-lg font-bold text-green-700">NGN {new Intl.NumberFormat().format(totalEarnings)}</p>
-//             </div>
-//             <div className="bg-red-50 p-3 rounded-lg">
-//               <p className="text-sm text-red-600">Total Penalties</p>
-//               <p className="text-lg font-bold text-red-700">NGN {new Intl.NumberFormat().format(totalPenalties)}</p>
-//             </div>
-//           </div>
-
-//           <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
-//             <AlertDialogTrigger asChild>
-//               <button className="flex items-center gap-2 bg-[#F9CA44] text-white px-6 py-3 rounded-lg hover:bg-[#e0b63c] transition-all duration-300">
-//                 <ArrowDownCircle className="h-5 w-5" />
-//                 Withdraw Funds
-//               </button>
-//             </AlertDialogTrigger>
-//             <AlertDialogContent>
-//               <AlertDialogHeader>
-//                 <AlertDialogTitle>Withdraw Funds</AlertDialogTitle>
-//                 <AlertDialogDescription>
-//                   <div className="mt-4">
-//                     <label className="block text-sm font-medium text-gray-700">
-//                       Amount to withdraw
-//                     </label>
-//                     <input
-//                       type="number"
-//                       value={withdrawAmount}
-//                       onChange={(e) => setWithdrawAmount(e.target.value)}
-//                       className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
-//                       placeholder="Enter amount"
-//                       max={balance}
-//                     />
-//                   </div>
-//                 </AlertDialogDescription>
-//               </AlertDialogHeader>
-//               <AlertDialogFooter>
-//                 <AlertDialogCancel>Cancel</AlertDialogCancel>
-//                 <AlertDialogAction
-//                   onClick={handleWithdraw}
-//                   className="bg-[#F9CA44] hover:bg-[#e0b63c]"
-//                 >
-//                   Confirm Withdrawal
-//                 </AlertDialogAction>
-//               </AlertDialogFooter>
-//             </AlertDialogContent>
-//           </AlertDialog>
-//         </div>
-//       </div>
-
-//       {/* Order Statistics */}
-//       <div className="grid grid-cols-2 gap-4">
-//         <div className="bg-white rounded-lg shadow-md p-4">
-//           <div className="flex items-center space-x-3">
-//             <CheckCircle className="w-8 h-8 text-green-500" />
-//             <div>
-//               <p className="text-sm text-gray-600">Completed Orders</p>
-//               <p className="text-2xl font-bold text-green-600">{completedOrders}</p>
-//             </div>
-//           </div>
-//         </div>
-//         <div className="bg-white rounded-lg shadow-md p-4">
-//           <div className="flex items-center space-x-3">
-//             <Clock className="w-8 h-8 text-yellow-500" />
-//             <div>
-//               <p className="text-sm text-gray-600">Pending Orders</p>
-//               <p className="text-2xl font-bold text-yellow-600">{pendingOrders}</p>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// // Verification Status Component
-// const VerificationStatus = ({ verification }: { verification: IRiderVerification }) => {
-//   const getStatusColor = (verified: boolean) => verified ? 'text-green-600' : 'text-red-600';
-//   const getStatusIcon = (verified: boolean) => verified ? <CheckCircle className="w-4 h-4" /> : <AlertTriangle className="w-4 h-4" />;
-
-//   return (
-//     <div className="bg-white rounded-lg shadow-md p-6">
-//       <div className="flex items-center space-x-3 mb-4">
-//         <Shield className="w-6 h-6 text-[#F9CA44]" />
-//         <h3 className="text-lg font-semibold">Account Verification</h3>
-//       </div>
-
-//       <div className="space-y-3">
-//         <div className="flex items-center justify-between">
-//           <span className="text-gray-600">NIN Verification</span>
-//           <div className={`flex items-center space-x-2 ${getStatusColor(verification.nin.verified)}`}>
-//             {getStatusIcon(verification.nin.verified)}
-//             <span className="text-sm">{verification.nin.verified ? 'Verified' : 'Pending'}</span>
-//           </div>
-//         </div>
-
-//         <div className="flex items-center justify-between">
-//           <span className="text-gray-600">BVN Verification</span>
-//           <div className={`flex items-center space-x-2 ${getStatusColor(verification.bvn.verified)}`}>
-//             {getStatusIcon(verification.bvn.verified)}
-//             <span className="text-sm">{verification.bvn.verified ? 'Verified' : 'Pending'}</span>
-//           </div>
-//         </div>
-
-//         <div className="flex items-center justify-between">
-//           <span className="text-gray-600">Driver's License</span>
-//           <div className={`flex items-center space-x-2 ${getStatusColor(verification.driversLicense.verified)}`}>
-//             {getStatusIcon(verification.driversLicense.verified)}
-//             <span className="text-sm">{verification.driversLicense.verified ? 'Verified' : 'Pending'}</span>
-//           </div>
-//         </div>
-//       </div>
-
-//       <div className="mt-4 pt-4 border-t">
-//         <div className="flex items-center justify-between">
-//           <span className="font-medium">Overall Status</span>
-//           <span className={`px-3 py-1 rounded-full text-sm font-medium ${
-//             verification.overallVerificationStatus === 'complete' 
-//               ? 'bg-green-100 text-green-700'
-//               : verification.overallVerificationStatus === 'partial'
-//               ? 'bg-yellow-100 text-yellow-700'
-//               : 'bg-red-100 text-red-700'
-//           }`}>
-//             {verification.overallVerificationStatus.toUpperCase()}
-//           </span>
-//         </div>
-//       </div>
-
-//       <Link href="/rider/verification" className="block mt-4">
-//         <button className="w-full bg-[#F9CA44] text-white py-2 rounded-lg hover:bg-[#e0b63c] transition-colors">
-//           Update Verification
-//         </button>
-//       </Link>
-//     </div>
-//   );
-// };
-
-// // Target Progress Component
-// const TargetProgress = ({ target }: { target: ITarget }) => {
-//   const progress = (target.completedOrders / target.targetOrders) * 100;
-
-//   return (
-//     <div className="bg-white rounded-lg shadow-md p-6">
-//       <div className="flex items-center space-x-3 mb-4">
-//         <Target className="w-6 h-6 text-[#F9CA44]" />
-//         <h3 className="text-lg font-semibold">{target.type.charAt(0).toUpperCase() + target.type.slice(1)} Target</h3>
-//       </div>
-
-//       <div className="space-y-4">
-//         <div className="flex justify-between text-sm">
-//           <span className="text-gray-600">Progress</span>
-//           <span className="font-medium">{target.completedOrders}/{target.targetOrders} orders</span>
-//         </div>
-
-//         <div className="w-full bg-gray-200 rounded-full h-3">
-//           <div 
-//             className={`h-3 rounded-full transition-all duration-300 ${
-//               target.isAchieved ? 'bg-green-500' : 'bg-[#F9CA44]'
-//             }`}
-//             style={{ width: `${Math.min(progress, 100)}%` }}
-//           />
-//         </div>
-
-//         <div className="flex justify-between items-center">
-//           <span className="text-sm text-gray-600">{progress.toFixed(1)}% Complete</span>
-//           {target.isAchieved && (
-//             <span className="flex items-center text-green-600 text-sm">
-//               <CheckCircle className="w-4 h-4 mr-1" />
-//               Target Achieved!
-//             </span>
-//           )}
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// // Enhanced Order Item Component with Accept/Complete Actions
-// const OrderItem = ({ 
-//   order, 
-//   onAccept, 
-//   onComplete, 
-//   showActions = true 
-// }: {
-//   order: IOrder;
-//   onAccept?: (orderId: string) => void;
-//   onComplete?: (orderId: string, pin: string) => void;
-//   showActions?: boolean;
-// }) => {
-//   const [pin, setPin] = useState('');
-//   const [showPinDialog, setShowPinDialog] = useState(false);
-
-//   const getStatusColor = (status: string) => {
-//     switch (status) {
-//       case 'delivered': return 'bg-green-100 text-green-700';
-//       case 'in_transit': return 'bg-blue-100 text-blue-700';
-//       case 'accepted': return 'bg-yellow-100 text-yellow-700';
-//       case 'pending': return 'bg-gray-100 text-gray-700';
-//       case 'cancelled': return 'bg-red-100 text-red-700';
-//       default: return 'bg-gray-100 text-gray-700';
-//     }
-//   };
-
-//   const handleCompleteOrder = () => {
-//     if (pin.length === 4 && onComplete) {
-//       onComplete(order._id, pin);
-//       setPin('');
-//       setShowPinDialog(false);
-//     }
-//   };
-
-//   const isOverdue = () => {
-//     if (order.acceptedAt && order.status === 'accepted') {
-//       const acceptedTime = new Date(order.acceptedAt).getTime();
-//       const currentTime = new Date().getTime();
-//       const hoursElapsed = (currentTime - acceptedTime) / (1000 * 60 * 60);
-//       return hoursElapsed > order.estimatedDeliveryTime;
-//     }
-//     return false;
-//   };
-
-//   return (
-//     <div className={`group bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-300 p-4 lg:p-6 mt-2 ${
-//       isOverdue() ? 'border-l-4 border-red-500' : ''
-//     }`}>
-//       <div className="flex justify-between items-start">
-//         <div className="flex items-center space-x-3">
-//           <div className="p-2 bg-gray-50 rounded-lg group-hover:bg-gray-100 transition-colors">
-//             <Package className="w-7 h-7 text-gray-600" />
-//           </div>
-//           <div>
-//             <p className="text-sm text-gray-500">Order ID</p>
-//             <p className="font-bold">#{order.orderId}</p>
-//             <p className="text-sm text-gray-600 mt-1">{order.receiverName}</p>
-//             <p className="text-xs text-gray-500 flex items-center mt-1">
-//               <MapPin className="w-3 h-3 mr-1" />
-//               {order.receiversAddress}
-//             </p>
-//           </div>
-//         </div>
-
-//         <div className="text-right">
-//           <span className={`capitalize font-medium px-3 py-1 rounded-full text-sm ${getStatusColor(order.status)}`}>
-//             {order.status.replace('_', ' ')}
-//           </span>
-//           <p className="text-lg font-bold mt-2">NGN {new Intl.NumberFormat().format(parseInt(order.cost))}</p>
-//           {isOverdue() && (
-//             <p className="text-xs text-red-500 flex items-center mt-1">
-//               <AlertTriangle className="w-3 h-3 mr-1" />
-//               Overdue
-//             </p>
-//           )}
-//         </div>
-//       </div>
-
-//       {showActions && (
-//         <div className="mt-4 flex space-x-2">
-//           {order.status === 'pending' && onAccept && (
-//             <button
-//               onClick={() => onAccept(order._id)}
-//               className="flex-1 bg-[#F9CA44] text-white px-4 py-2 rounded-lg hover:bg-[#e0b63c] transition-colors"
-//             >
-//               Accept Order
-//             </button>
-//           )}
-
-//           {order.status === 'accepted' && onComplete && (
-//             <button
-//               onClick={() => setShowPinDialog(true)}
-//               className="flex-1 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors"
-//             >
-//               Mark as Delivered
-//             </button>
-//           )}
-//         </div>
-//       )}
-
-//       {/* PIN Dialog */}
-//       <AlertDialog open={showPinDialog} onOpenChange={setShowPinDialog}>
-//         <AlertDialogContent>
-//           <AlertDialogHeader>
-//             <AlertDialogTitle>Complete Delivery</AlertDialogTitle>
-//             <AlertDialogDescription>
-//               <div className="mt-4">
-//                 <p className="mb-4">Enter the 4-digit PIN provided by the receiver to confirm delivery:</p>
-//                 <input
-//                   type="text"
-//                   value={pin}
-//                   onChange={(e) => setPin(e.target.value.slice(0, 4))}
-//                   className="w-full text-center text-2xl font-bold tracking-wider rounded-md border border-gray-300 px-3 py-2"
-//                   placeholder="0000"
-//                   maxLength={4}
-//                 />
-//               </div>
-//             </AlertDialogDescription>
-//           </AlertDialogHeader>
-//           <AlertDialogFooter>
-//             <AlertDialogCancel onClick={() => setPin('')}>Cancel</AlertDialogCancel>
-//             <AlertDialogAction
-//               onClick={handleCompleteOrder}
-//               disabled={pin.length !== 4}
-//               className="bg-green-500 hover:bg-green-600"
-//             >
-//               Complete Delivery
-//             </AlertDialogAction>
-//           </AlertDialogFooter>
-//         </AlertDialogContent>
-//       </AlertDialog>
-//     </div>
-//   );
-// };
-
-// // Main Dashboard Component
-// const WalletDashboard = () => {
-//   const { user, accessToken } = useAuth();
-//   const [wallet, setWallet] = useState<IWallet | null>(null);
-//   const [orders, setOrders] = useState<IOrder[] | null>(null);
-//   const [verification, setVerification] = useState<IRiderVerification | null>(null);
-//   const [target, setTarget] = useState<ITarget | null>(null);
-//   const [isLoading, setIsLoading] = useState<boolean>(true);
-//   const [completedOrders, setCompletedOrders] = useState(0);
-//   const [pendingOrders, setPendingOrders] = useState(0);
-
-//   const handleAcceptOrder = async (orderId: string) => {
-//     try {
-//       const response = await fetch(`/api/orders/${orderId}/accept`, {
-//         method: 'POST',
-//         headers: {
-//           Authorization: `Bearer ${accessToken}`,
-//           'Content-Type': 'application/json',
-//         },
-//       });
-
-//       if (response.ok) {
-//         // Refresh orders
-//         fetchDashboardData();
-//       }
-//     } catch (error) {
-//       console.error('Error accepting order:', error);
-//     }
-//   };
-
-//   const handleCompleteOrder = async (orderId: string, pin: string) => {
-//     try {
-//       const response = await fetch(`/api/orders/${orderId}/complete`, {
-//         method: 'POST',
-//         headers: {
-//           Authorization: `Bearer ${accessToken}`,
-//           'Content-Type': 'application/json',
-//         },
-//         body: JSON.stringify({ pin }),
-//       });
-
-//       if (response.ok) {
-//         // Refresh orders
-//         fetchDashboardData();
-//       } else {
-//         alert('Invalid PIN. Please try again.');
-//       }
-//     } catch (error) {
-//       console.error('Error completing order:', error);
-//     }
-//   };
-
-//   const fetchDashboardData = async () => {
-//     try {
-//       const response = await fetch('/api/rider/dashboard', {
-//         headers: {
-//           Authorization: `Bearer ${accessToken}`,
-//         },
-//       });
-
-//       const data = await response.json();
-
-//       if (response.ok) {
-//         setWallet(data.wallet);
-//         setOrders(data.recentOrders);
-//         setVerification(data.verification);
-//         setTarget(data.target);
-//         setCompletedOrders(data.completedOrders);
-//         setPendingOrders(data.pendingOrders);
-//         setIsLoading(false);
-//       }
-//     } catch (error) {
-//       console.error('Error fetching dashboard data:', error);
-//       setIsLoading(false);
-//     }
-//   };
-
-//   useEffect(() => {
-//     fetchDashboardData();
-//   }, [accessToken]);
-
-//   if (isLoading) {
-//     return <Loader />;
-//   }
-
-//   return (
-//     <div className="bg-gray-50 min-h-screen p-4 lg:p-8">
-//       <div className="max-w-7xl mx-auto">
-//         <DashboardHeader user={user} />
-
-//         <div className="lg:grid lg:grid-cols-3 lg:gap-8 lg:mt-14">
-//           <WalletCard 
-//             balance={wallet?.balance || 0} 
-//             completedOrders={completedOrders} 
-//             pendingOrders={pendingOrders}
-//             totalEarnings={wallet?.totalEarnings || 0}
-//             totalPenalties={wallet?.totalPenalties || 0}
-//           />
-
-//           <div className="mt-6 lg:mt-0">
-//             <div className="space-y-6">
-//               {verification && <VerificationStatus verification={verification} />}
-//               {target && <TargetProgress target={target} />}
-//             </div>
-//           </div>
-//         </div>
-
-//         <div className="mt-8">
-//           <div className="flex justify-between items-center">
-//             <h2 className="text-xl font-bold">Recent Orders</h2>
-//             <Link href="/rider/orders" className="text-gray-500 hover:text-gray-700 hover:underline transition-colors">
-//               View All Orders
-//             </Link>
-//           </div>
-
-//           <div className="space-y-3 mt-4">
-//             {orders?.map((order: IOrder) => (
-//               <OrderItem 
-//                 key={order._id} 
-//                 order={order} 
-//                 onAccept={handleAcceptOrder}
-//                 onComplete={handleCompleteOrder}
-//                 showActions={order.status === 'pending' || order.status === 'accepted'}
-//               />
-//             ))}
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default WalletDashboard;
-
-
-// "use client";
-// import React, { useEffect, useRef, useState } from "react";
-// import { Wallet, ArrowDownCircle, Plus, Receipt, Package, Bell } from "lucide-react";
-// import Link from "next/link";
-// import { IUser, useAuth } from "@/context/AuthContext";
-// import {
-//   AlertDialog,
-//   AlertDialogAction,
-//   AlertDialogCancel,
-//   AlertDialogContent,
-//   AlertDialogDescription,
-//   AlertDialogFooter,
-//   AlertDialogHeader,
-//   AlertDialogTitle,
-//   AlertDialogTrigger,
-// } from "@/components/ui/alert-dialog";
-// import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-// import { getDate } from "@/lib/utils";
-// import { Loader } from "../ui/custom/loader";
-// import { IOrder, IWallet } from "@/interfaces/interface";
-
-
-
-
-// // Header Component
-// const DashboardHeader = ({ user }: { user: IUser | null }) => {
-//   const [isLoading, setLoading] = useState(false);
-
-//   return (
-//     <>
-//       {isLoading &&
-//         <Loader />
-//       }
-//       <div className="flex justify-between items-center mt-4">
-//         <Link href="profile" className="group flex items-center space-x-4">
-//           <div className="relative overflow-hidden rounded-full transition-transform group-hover:scale-105">
-//             <Avatar className="h-[70px] w-[70px] bg-purple-100">
-//               <AvatarImage
-//                 src={`https://api.dicebear.com/7.x/notionists/svg?seed=${user?.firstname || "Username"
-//                   }`}
-//               />
-//               <AvatarFallback>
-//                 {user
-//                   ? user.firstname?.slice(0, 2).toUpperCase()
-//                   : "UN"}
-//               </AvatarFallback>
-//             </Avatar>
-//           </div>
-//           <h1 className="text-2xl font-medium hidden lg:block group-hover:text-gray-700">
-//             {user?.username}
-//           </h1>
-//         </Link>
-
-//         <Link href="/rider/notification">
-//           <Bell className="w-6 h-6 text-black" onClick={() => { setLoading(true); }} />
-//         </Link>
-//       </div>
-//     </>
-//   );
-// };
-
-// // Wallet Card Component
-// const WalletCard = ({ balance, notDeliveredOrders, completedOrders }: { balance: number, notDeliveredOrders: number, completedOrders: number }) => {
-//   const [isOpen, setIsOpen] = useState(false);
-//   const [withdrawAmount, setWithdrawAmount] = useState('');
-
-//   const handleWithdraw = () => {
-//     setIsOpen(false);
-//     setWithdrawAmount("");
-//   };
-
-//   return (
-//     <div className="lg:col-span-2">
-//       <h2 className="text-xl font-semibld mt-6 lg:mt-0"></h2>
-//       <div className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 p-6 mt-2 relative overflow-hidden">
-//         {/* Decorative Pattern */}
-//         <div className="absolute top-0 right-0 w-64 h-64 transform translate-x-32 -translate-y-32">
-//           <div className="absolute inset-0 bg-[#F9CA44] opacity-10 transform rotate-45 scale-150" />
-//         </div>
-
-//         <div className="relative z-10">
-//           <div className="flex items-center space-x-3 mb-6">
-//             <div className="p-3 bg-[#F9CA44] bg-opacity-20 rounded-full">
-//               <Wallet className="w-8 h-8 text-[#F9CA44]" />
-//             </div>
-//             <span className="text-lg font-medium text-gray-600">
-//               Available Balance
-//             </span>
-//           </div>
-
-//           <div className="text-4xl font-bold mb-6">NGN {new Intl.NumberFormat().format(balance)}</div>
-
-//           <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
-//             <AlertDialogTrigger asChild>
-//               <button className="flex items-center gap-2 bg-[#F9CA44] text-white px-6 py-3 rounded-lg hover:bg-[#e0b63c] transition-all duration-300">
-//                 <ArrowDownCircle className="h-5 w-5" />
-//                 Withdraw Funds
-//               </button>
-//             </AlertDialogTrigger>
-//             <AlertDialogContent>
-//               <AlertDialogHeader>
-//                 <AlertDialogTitle>Withdraw Funds</AlertDialogTitle>
-//                 <AlertDialogDescription>
-//                   <div className="mt-4">
-//                     <label className="block text-sm font-medium text-gray-700">
-//                       Amount to withdraw
-//                     </label>
-//                     <input
-//                       type="number"
-//                       value={withdrawAmount}
-//                       onChange={(e) => setWithdrawAmount(e.target.value)}
-//                       className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
-//                       placeholder="Enter amount"
-//                     />
-//                   </div>
-//                 </AlertDialogDescription>
-//               </AlertDialogHeader>
-//               <AlertDialogFooter>
-//                 <AlertDialogCancel>Cancel</AlertDialogCancel>
-//                 <AlertDialogAction
-//                   onClick={handleWithdraw}
-//                   className="bg-[#F9CA44] hover:bg-[#e0b63c]"
-//                 >
-//                   Confirm Withdrawal
-//                 </AlertDialogAction>
-//               </AlertDialogFooter>
-//             </AlertDialogContent>
-//           </AlertDialog>
-//         </div>
-//       </div>
-//       {/* <div className="flex flex-row justify-start gap-4 py-6 px-1">
-//         <span className="block font-semibold">
-//           Completed Deliveries: <span className="font-normal">{completedOrders}</span>
-//         </span>
-//         <span className="block font-semibold">
-//           Pending Deliveries: <span className="font-normal">{notDeliveredOrders}</span>
-//         </span>
-//       </div> */}
-//     </div>
-//   );
-// };
-
-// // Reciept Modal Component
-// export const ReceiptModal = ({
-//   order,
-//   isOpen,
-//   onClose,
-// }: {
-//   order: IOrder | null;
-//   isOpen: boolean;
-//   onClose: () => void;
-// }) => (
-//   <AlertDialog open={isOpen} onOpenChange={onClose}>
-//     <AlertDialogContent className="max-w-2xl">
-//       <AlertDialogHeader>
-//         <AlertDialogTitle className="flex items-center gap-2">
-//           <Receipt className="w-5 h-5 text-[#F9CA44]" />
-//           Order Receipt
-//         </AlertDialogTitle>
-//         <AlertDialogDescription>
-//           {order && (
-//             <div className="mt-4 space-y-4">
-//               <div className="bg-gray-50 p-6 rounded-lg">
-//                 <div className="flex justify-between mb-4">
-//                   <span className="text-gray-600">Order ID:</span>
-//                   <span className="font-medium">{order.orderId}</span>
-//                 </div>
-//                 <div className="flex justify-between mb-4">
-//                   <span className="text-gray-600">Date:</span>
-//                   <span className="font-medium">
-//                     {getDate(new Date(order.updatedAt))}
-//                   </span>
-//                 </div>
-//                 <div className="flex justify-between mb-4">
-//                   <span className="text-gray-600">Status:</span>
-//                   <span
-//                     className={`capitalize px-2 py-1 rounded-full text-sm font-medium ${order.status === "delivered"
-//                       ? "bg-green-100 text-green-700"
-//                       : "bg-yellow-100 text-yellow-700"
-//                       }`}
-//                   >
-//                     {order.status}
-//                   </span>
-//                 </div>
-//                 <div className="flex justify-between mb-4">
-//                   <span className="text-gray-600">Payment Status:</span>
-//                   <span
-//                     className={`capitalize font-medium ${order.paymentStatus === "paid"
-//                       ? "text-green-600"
-//                       : "text-red-600"
-//                       }`}
-//                   >
-//                     {order.paymentStatus}
-//                   </span>
-//                 </div>
-//               </div>
-
-//               <div className="border-t pt-4">
-//                 <h4 className="font-medium mb-3">Delivery Details</h4>
-//                 <div className="space-y-2">
-//                   <div className="flex justify-between">
-//                     <span className="text-gray-600">Receiver:</span>
-//                     <span className="font-medium">{order.receiverName}</span>
-//                   </div>
-//                   <div className="flex justify-between">
-//                     <span className="text-gray-600">Address:</span>
-//                     <span className="font-medium text-right">
-//                       {order.receiversAddress}
-//                     </span>
-//                   </div>
-//                 </div>
-//               </div>
-
-//               <div className="border-t pt-4">
-//                 <div className="flex justify-between items-center">
-//                   <span className="text-lg font-medium">Total Cost</span>
-//                   <span className="text-xl font-bold text-black">
-//                     ₦{new Intl.NumberFormat().format(parseInt(order.cost))}
-//                   </span>
-//                 </div>
-//               </div>
-//             </div>
-//           )}
-//         </AlertDialogDescription>
-//       </AlertDialogHeader>
-//       <AlertDialogFooter className="flex items-center justify-between w-full">
-//         {/* Checkout Button (visible only if paymentStatus is unpaid) */}
-//         {order?.paymentStatus !== "paid" && (
-//           <button className="bg-green-500 hover:bg-green-400 text-white px-4 py-2 rounded-lg transition-colors">
-//             Checkout Order
-//           </button>
-//         )}
-
-//         {/* Close Button */}
-//         <AlertDialogCancel className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
-//           Close
-//         </AlertDialogCancel>
-//       </AlertDialogFooter>
-//     </AlertDialogContent>
-//   </AlertDialog>
-// );
-
-
-// // Transaction Item Component
-// export const TransactionItem = ({ order, onClick }: {
-//   order: IOrder,
-//   onClick: () => void
-// }) => {
-
-//   return (
-//     <div className="group bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-300 p-4 lg:p-6 mt-2 cursor-pointer" onClick={onClick}>
-//       <div className="flex justify-between items-center">
-//         <div className="flex items-center space-x-3">
-//           <div className="p-2 bg-gray-50 rounded-lg group-hover:bg-gray-100 transition-colors">
-//             <Package className="w-7 h-7 text-gray-600" />
-//           </div>
-//           <div>
-//             <p className="text-sm text-gray-500">Transaction ID</p>
-//             <p className="font-bold">#{order.orderId}</p>
-//           </div>
-//         </div>
-//         <span
-//           className={`capitalize font-medium px-3 py-1 rounded-full text-sm ${order.status === "delivered"
-//             ? "bg-green-50 text-green-600"
-//             : "bg-yellow-50 text-yellow-600"
-//             }`}
-//         >
-
-//           ₦ {new Intl.NumberFormat().format(parseInt(order.cost))}
-//         </span>
-//       </div>
-//     </div>
-//   )
-// };
-
-// // Main Component
-// const WalletDashboard = () => {
-//   const { user, accessToken } = useAuth();
-//   const [wallet, setWallet] = useState<IWallet | null>(null);
-//   const [orders, setOrders] = useState<IOrder[] | null>(null)
-//   const [hasMore, setHasMore] = useState<boolean>(true);
-//   const [isLoading, setIsLoading] = useState<boolean>(true);
-//   const [latestOrder, setLatestOrder] = useState<IOrder | null>(null);
-//   const [selectedOrder, setSelectedOrder] = useState<IOrder | null>(null);
-//   const [isModalOpen, setIsModalOpen] = useState(false);
-//   const [completedOrders, setCompletedOrders] = useState(0);
-//   const [notDeliveredOrders, setNotDeliveredOrders] = useState(0);
-
-//   const page = useRef(1);
-//   const limit = useRef(10);
-
-//   const handleOrderClick = (order: IOrder) => {
-//     setSelectedOrder(order);
-//     setIsModalOpen(true);
-//   };
-
-
-//   useEffect(() => {
-//     const fetchOrders = async () => {
-//       if (!hasMore) return;
-
-//       try {
-//         const response = await fetch(
-//           `/api/wallets?page=${page.current}&limit=${limit.current}`,
-//           {
-//             headers: {
-//               Authorization: `Bearer ${accessToken}`,
-//             },
-//           }
-//         );
-
-//         const data = await response.json();
-
-//         if (response.ok) {
-//           setWallet(data.wallet)
-//           setOrders(data.orders.docs)
-//           setLatestOrder(data.orders.docs[0]);
-//           setHasMore(data.orders.hasMore);
-//           setCompletedOrders(data.completedOrders);
-//           setNotDeliveredOrders(data.notDeliveredOrders)
-//           setIsLoading(false);
-//         } else {
-//           console.error("Failed to fetch orders:", data.message);
-//           setIsLoading(false);
-//         }
-//       } catch (error) {
-//         console.error("Error fetching orders:", error);
-//         setIsLoading(false);
-//       }
-//     };
-
-//     fetchOrders();
-//   }, [accessToken, hasMore]);
-
-
-//   return (
-//     <div className="bg-gray-50 min-h-screen p-4 lg:p-8">
-//       <div className="max-w-7xl mx-auto">
-//         <DashboardHeader user={user} />
-
-//         <div className="lg:grid lg:grid-cols-3 lg:gap-8 lg:mt-14">
-//           <WalletCard balance={wallet?.balance || 0} completedOrders={completedOrders} notDeliveredOrders={notDeliveredOrders} />
-
-//           <div>
-//             <div className="flex justify-between items-center mt-6 lg:mt-0">
-//               <h2 className="text-xl font-bold">Recent Orders</h2>
-//               <Link href="/rider/order" className="text-gray-500 hover:text-gray-700 hover:underline transition-colors">
-//                 See All
-//               </Link>
-//             </div>
-
-//             <div className="space-y-3">
-//               {orders?.map((order: IOrder) => (
-//                 <TransactionItem key={order._id} order={order} onClick={() => handleOrderClick(order)} />
-//               ))}
-//             </div>
-//           </div>
-//         </div>
-//         <ReceiptModal
-//           order={selectedOrder}
-//           isOpen={isModalOpen}
-//           onClose={() => setIsModalOpen(false)}
-//         />
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default WalletDashboard;

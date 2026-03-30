@@ -122,7 +122,6 @@ export default function Notifications() {
 
                 <div className="flex-grow flex justify-between items-center">
                     <h2 className="text-xl font-bold text-black flex items-center gap-2">
-                        <Bell className="w-6 h-6 text-black" />
                         Notifications
                         {unreadCount > 0 && (
                             <span className="ml-2 bg-yellow-500 text-white text-xs px-2 py-1 rounded-full">

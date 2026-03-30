@@ -641,7 +641,7 @@ const Footer = ({
               <li><Link href="#" className="text-left hover:underline">Services</Link></li>
               <li><Link href="#" className="text-left hover:underline">Own a Store</Link></li>
               <li><Link href="#" className="text-left hover:underline">How it works</Link></li>
-              <li><Link href="#" className="text-left hover:underline">Register as a rider</Link></li>
+              <li><Link href="/authentication/signup/rider" className="text-left hover:underline">Register as a rider</Link></li>
             </ul>
           </div>
 
